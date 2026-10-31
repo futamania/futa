@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://futamania.github.io/futa/sitemap.xml
