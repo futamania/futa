@@ -10,6 +10,7 @@
   gtag('js', new Date());
 
   gtag('config', 'G-9VZYEJBWCW');
+  window.__track = function(name, params){ gtag('event', name, params || {}); };
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="index, follow">
@@ -153,35 +154,71 @@ details p{margin-top:8px;color:var(--ink)}
 .faq{display:grid;gap:10px}
 .note{font-size:.88rem;color:var(--muted)}
 footer{padding-top:56px;font-size:.84rem;color:var(--muted)}
-/* interactive night timeline */
-.tlx{overflow-x:auto;border:1px solid var(--line);background:var(--paper);-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-.tlx-inner{display:flex;width:max-content;position:relative}
-.tlx svg.lab{position:sticky;left:0;z-index:2;flex:none;background:var(--paper);border-right:1px solid var(--line)}
-.tlx svg.main{flex:none;display:block}
-.ev{cursor:pointer;outline:none}
-.ev .hit{fill:transparent}
-.ev:hover .dot,.ev:focus-visible .dot{stroke:var(--ink);stroke-width:2.5}
-.ev.on .dot{stroke:var(--ink);stroke-width:3}
-.ev.on .ring{opacity:1}
-.ring{opacity:0;fill:none;stroke:var(--ink);stroke-width:1.5}
-.conn{stroke:var(--rust);stroke-width:1.4;stroke-dasharray:3 4;opacity:.45}
-.conn.on{opacity:1;stroke-width:2}
-.hint{font-size:.84rem;color:var(--muted)}
-.detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px 28px;background:var(--paper);border:1px solid var(--line);padding:20px}
-.detail .txt{display:grid;gap:10px;align-content:start;min-width:0}
-.detail .top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
-.detail .tm{font-family:var(--f-mono);font-size:1.4rem;font-weight:600}
-.chip{font-size:.78rem;padding:1px 10px;border-radius:999px;color:var(--paper);font-weight:700}
-.detail h3{font-size:1.2rem}
-.detail blockquote{margin:0;padding:8px 12px;border-left:3px solid var(--lamp);background:var(--lamp-soft);font-size:.95rem}
-.detail .vlabel{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
-.detail .viz{min-width:0;display:grid;gap:8px;align-content:start}
-.detail .viz svg{width:100%;height:auto;display:block}
-.detail .nav{grid-column:1/-1;display:flex;gap:10px;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:12px}
-.detail button{font:inherit;font-size:.9rem;background:transparent;color:var(--ink);border:1px solid var(--line);padding:6px 14px;cursor:pointer}
-.detail button:hover{border-color:var(--rust)}
-.detail .count{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
-@media (max-width:760px){.detail{grid-template-columns:1fr}}
+/* night timeline: 全体図＋場面チップ＋1枚ずつのカード */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
+.nt{display:grid;gap:14px}
+.nt-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--night);display:grid;gap:8px;padding-block:8px;border-bottom:1px solid var(--line)}
+.nt-chaps{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.nt-chaps::-webkit-scrollbar{display:none}
+.chap{flex:none;font:inherit;font-size:.86rem;line-height:1.2;padding:8px 12px;min-height:40px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;cursor:pointer;display:flex;gap:6px;align-items:center}
+.chap span{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.chap.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chap.on span{color:var(--paper);opacity:.75}
+.chap:disabled{opacity:.35;cursor:default}
+.nt-mapwrap{background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+#ntmap{display:block;width:100%;cursor:pointer;touch-action:manipulation}
+.nt-ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}
+.nt-ctrl button{font:inherit;font-size:.95rem;font-weight:700;min-height:44px;min-width:88px;padding:0 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:6px;cursor:pointer}
+.nt-ctrl button:hover:not(:disabled){border-color:var(--rust)}
+.nt-ctrl button:disabled{opacity:.35;cursor:default}
+.nt-mid{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.nt-mid .pos{font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+.nt-mid label{display:flex;align-items:center;gap:6px;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.nt-mid input{width:18px;height:18px;accent-color:var(--rust)}
+.nt-card{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:14px;touch-action:pan-y}
+.c-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.c-time{font-family:var(--f-mono);font-size:1.6rem;font-weight:600;line-height:1}
+.c-chap{font-size:.84rem;color:var(--muted)}
+.chip{font-size:.78rem;padding:2px 10px;border-radius:999px;color:var(--paper);font-weight:700}
+.nt-card h3{font-size:1.25rem;line-height:1.45}
+.c-lab{display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+.post{border:1px solid var(--line);border-left:4px solid var(--who,var(--lamp));background:var(--night);padding:10px 12px;border-radius:4px}
+.post-name{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);line-height:1.5;word-break:break-all}
+.post-name b{color:var(--proof);font-weight:600}
+.post p{font-size:1rem;margin-top:4px}
+.meanwhile .post{border-left-color:var(--muted);opacity:.9}
+.c-verdict{display:flex;align-items:center;gap:10px}
+.c-verdict::before,.c-verdict::after{content:"";flex:1;height:1px;background:var(--line)}
+.c-verdict span{font-weight:700;font-size:.9rem;padding:4px 14px;border-radius:999px;border:1.5px solid currentColor}
+.c-verdict span::before{content:"↓ "}
+.c-verdict.ng span{color:var(--rust);background:var(--rust-soft)}
+.c-verdict.ok span{color:var(--proof);background:var(--proof-soft)}
+.c-verdict.na span{color:var(--muted)}
+.c-down{display:grid;gap:10px}
+.c-down p{font-size:.98rem}
+.c-down .viz{background:var(--night);border-radius:6px;padding:12px}
+.c-down .viz svg{display:block;width:100%;height:auto;max-width:560px;margin:0 auto}
+.nt-tip{font-size:.84rem;color:var(--muted)}
+@media (max-width:600px){
+  .nt-card{padding:14px}
+  .c-down .viz{padding:8px 4px}
+  .figure{padding:14px 10px}
+  .tablewrap{border:0;background:transparent;overflow:visible}
+  .tablewrap table{min-width:0}
+  .tablewrap thead{display:none}
+  .tablewrap tr{display:grid;gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px}
+  .tablewrap td{display:block;border:0;padding:0}
+  .tablewrap td::before{content:attr(data-label);display:block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--muted)}
+  .tablewrap td:last-child::before{display:none}
+}
+.figure .vizbox svg{display:block;width:100%;height:auto;max-width:560px;margin:0 auto}
+@media (min-width:760px){
+  .nt-card{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);column-gap:28px;align-items:start}
+  .nt-card .c-head,.nt-card h3{grid-column:1/-1}
+  .nt-card .c-up{grid-column:1;grid-row:3}
+  .nt-card .c-verdict{grid-column:1;grid-row:4}
+  .nt-card .c-down{grid-column:2;grid-row:3/span 3}
+}
 @media (prefers-reduced-motion:no-preference){.links a{transition:border-color .15s}}
 </style>
 </head>
@@ -214,29 +251,26 @@ footer{padding-top:56px;font-size:.84rem;color:var(--muted)}
   <div style="display:grid;gap:10px">
     <p class="eyebrow">Timeline ／ 2004年9月12日 20:00 — 9月13日 06:30</p>
     <h2 id="tlh">あの夜、スレと現実</h2>
-    <p class="prose">上半分はスレに届いた報告、下半分は記録から復元した実際の流れです。点はすべて元ログの実際の投稿時刻で、大きな点をタップすると書き込みの中身と検証が出ます。赤い点線は、報告と記録が食い違う組み合わせです。いちばん上の山は10分ごとのレス数で、スレがいちばん注目されていた時間帯を示します。</p>
+    <p class="prose">いちばん注目された一晩を、28の場面で追います。各カードの上段が当時スレに届いた報告、下段が記録から分かる実際です。上の全体図は、山がスレの勢い、▲の列が報告、▼の列が実際の出来事です。全体図をタップするとその時刻へ、場面ボタンで章ごとに移動できます。スマホではカードを左右にスワイプしても進めます。</p>
   </div>
-  <div class="tlx" id="tlx"><div class="tlx-inner" id="tlxi"></div></div>
-  <p class="hint">横にスクロールできます。点をタップ（またはTabキーで移動してEnter）すると下に詳細が出ます。</p>
-  <div class="detail" id="detail" aria-live="polite"></div>
+  <div class="nt" id="nt">
+    <div class="nt-bar">
+      <div class="nt-chaps" id="ntchaps" aria-label="場面"></div>
+      <div class="nt-mapwrap"><svg id="ntmap" role="img" aria-label="一晩の全体図。タップした時刻の出来事に移動"></svg></div>
+      <div class="nt-ctrl">
+        <button type="button" id="ntprev" aria-label="前の出来事">← 前</button>
+        <div class="nt-mid"><span class="pos" id="ntpos"></span><label for="ntonly"><input type="checkbox" id="ntonly">食い違いだけ</label></div>
+        <button type="button" id="ntnext" aria-label="次の出来事">次 →</button>
+      </div>
+    </div>
+    <article class="nt-card" id="ntcard" aria-live="polite"></article>
+  </div>
 </section>
 
 <section aria-labelledby="dist">
   <h2 id="dist">41.6kmの意味</h2>
   <div class="figure">
-    <svg viewBox="0 0 640 230" role="img" aria-label="福山市草戸町とドレミイン倉敷の位置関係。直線41.6km。12分で往復するには時速200km以上が必要">
-      <line x1="80" y1="170" x2="560" y2="60" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 6"/>
-      <circle cx="80" cy="170" r="9" fill="var(--rust)"/>
-      <circle cx="560" cy="60" r="9" fill="var(--lamp)"/>
-      <circle cx="80" cy="170" r="34" fill="none" stroke="var(--rust)" stroke-width="1" opacity=".5"/>
-      <text x="80" y="214" text-anchor="middle" fill="var(--ink)" font-size="15" font-weight="700" font-family="Zen Kaku Gothic New, sans-serif">福山市 草戸町</text>
-      <text x="80" y="130" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Zen Kaku Gothic New, sans-serif">区らしきの蓋</text>
-      <text x="560" y="34" text-anchor="middle" fill="var(--ink)" font-size="15" font-weight="700" font-family="Zen Kaku Gothic New, sans-serif">ドレミイン倉敷</text>
-      <text x="560" y="96" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Zen Kaku Gothic New, sans-serif">実況の舞台・566がいた場所</text>
-      <text x="320" y="104" text-anchor="middle" fill="var(--rust)" font-size="22" font-family="JetBrains Mono, monospace" font-weight="600">41.6 km</text>
-      <text x="320" y="128" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Zen Kaku Gothic New, sans-serif">直線距離。12分で往復なら 約208 km/h</text>
-      <text x="80" y="168" text-anchor="middle" dy="-44" fill="var(--rust)" font-size="11" font-family="JetBrains Mono, monospace">原チャリ10〜15分圏</text>
-    </svg>
+    <div class="vizbox" id="distviz"></div>
     <p class="cap">座標はOpenStreetMap（ドレミイン倉敷：34.5814N 133.7897E、草戸町一丁目：34.4797N 133.3528E）。片道でも41.6kmを12分で走ると時速208km。原チャリで「10〜15分」の近所という申告とも、福山なら合う。</p>
   </div>
 </section>
@@ -261,8 +295,8 @@ footer{padding-top:56px;font-size:.84rem;color:var(--muted)}
   <h2 id="lag">画像のアップ時刻で見分ける釣り</h2>
   <p class="prose">当時のアップローダーは、ファイル名にアップした時刻を入れていました（例：<span class="mono">img20040913033215</span> は 2004/09/13 03:32:15）。ファイル名の時刻から、スレに貼られるまでの遅れを計算しました。生の画像は数分で貼られます。何時間も前にアップされていた画像は、既存の画像を流用した釣りです。</p>
   <div class="figure">
-    <svg id="lagchart" viewBox="0 0 640 380" role="img" aria-label="画像ごとのアップから投稿までの遅れ。ほとんどは1〜6分、偽物2枚は7時間55分と10時間3分"></svg>
-    <p class="cap">横軸は対数目盛（分）。赤の2枚はスレが立つ前（9/12 20:10:30）にアップされていた。<span class="mono">◆tGLaO</span>の画像を貼ったIDは、4分後に別の名前で「釣ったどー」と書いている。</p>
+    <div class="vizbox" id="lagviz"></div>
+    <p class="cap">横軸は対数目盛（分）。赤い2本はスレが立つ前（9/12 20:10:30）にアップされていた。<span class="mono">◆tGLaO</span>の画像を貼ったIDは、4分後に別の名前で「釣ったどー」と書いている。</p>
   </div>
 </section>
 
@@ -270,7 +304,7 @@ footer{padding-top:56px;font-size:.84rem;color:var(--muted)}
   <h2 id="trend">今も検索されている？</h2>
   <p class="prose">Googleトレンド（日本、2004年〜2026年10月）で「蓋スレ」「倉敷蓋事件」を比べました。値は期間中の最大を100とした相対値です。普段はほぼ1以下で、テレビで取り上げられたときだけ跳ね上がります。2023年7月の山は、フジテレビ「世界の何だコレ!?ミステリー」の放送（7月5日とみられる）と重なります。</p>
   <div class="figure">
-    <svg id="trendchart" viewBox="0 0 640 240" role="img" aria-label="Googleトレンドの月別推移。2023年7月に蓋スレが100、それ以外はほぼ0〜6"></svg>
+    <svg id="trendchart" role="img" aria-label="Googleトレンドの月別推移。2023年7月に蓋スレが100、それ以外はほぼ0〜6"></svg>
     <div class="legend"><span class="l-hit">蓋スレ</span><span class="l-seen">倉敷蓋事件</span></div>
     <p class="cap">2024年3月以降が0に見えるのは、2023年7月の山に比べて1%未満だからで、検索がゼロという意味ではありません。データの取得は2026年10月31日。</p>
   </div>
@@ -331,232 +365,198 @@ footer{padding-top:56px;font-size:.84rem;color:var(--muted)}
 const POSTS={hina:[10.5,13.7,15.4,16.5,18.4,19.4,20.1,22.4,25.3,27.2,28.3,31.8,36.3,37.4,42.1,56.5,61.7,64.5,66.8,68.8,71.1,75.3,76.5,77.5,79.5,90.3],kuro:[245.1,252.6,264.9,278.3,307.7,334.3,356.4,369.9,391.7,420.6,437.6,451.1,462.1],kura:[343.3,346.3,347.9,349.0,351.5,355.0,359.3,368.8],ture:[393.9,398.6,402.4,405.7,409.6,414.7,418.5,422.8,425.2,429.3,433.1,445.8,449.2,454.3,458.4,467.6,470.1,475.1,478.7,481.7,485.4,489.5,494.6,499.6,502.4,507.2,508.9,514.0,518.6,522.2,524.6,526.9,529.0,532.9,535.5,536.4,538.2,539.2,540.8,542.5,545.0,548.1,552.6,555.0,561.5,564.5,571.6,573.9,576.4,578.4,580.5,584.1,587.3,592.5,600.1,621.6,623.0],s566:[368.5,374.1,377.5,385.7,393.9,474.9,480.9,486.0,490.6,493.1,507.6,509.8,596.5,597.4,600.5,606.6,613.0,623.0],li8t:[615.1,617.1,618.1,621.0,621.5,626.2],fake:[438.1,444.2]};
 const RATE=[[10,19],[20,19],[30,17],[40,14],[50,19],[60,41],[70,45],[80,37],[90,29],[100,7],[110,8],[120,7],[130,13],[140,2],[150,4],[160,4],[170,4],[180,7],[190,10],[200,0],[210,3],[220,3],[230,5],[240,14],[250,12],[260,11],[270,16],[280,18],[290,16],[300,14],[310,12],[320,14],[330,19],[340,43],[350,56],[360,61],[370,73],[380,74],[390,105],[400,139],[410,159],[420,158],[430,146],[440,145],[450,153],[460,118],[470,136],[480,147],[490,116],[500,144],[510,121],[520,129],[530,156],[540,180],[550,154],[560,147],[570,164],[580,133],[590,112],[600,90],[610,81],[620,97]];
 const FK={t:[24.7,24.1,24.2,23.8,23.5,23.5],d:[22.6,22.2,22.5,21.9,21.8,21.8]}; // 福山 1〜6時
-const K=2.4,X0=16,TMAX=630,W=X0*2+TMAX*K,H=520,LW=118;
-const X=t=>X0+t*K;
-const hm=t=>{let m=Math.floor(t)+1200;const h=Math.floor(m/60)%24;return `${String(h).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`};
-const ROW={hina:112,kuro:138,kura:164,s566:190,li8t:216, grp:318,ture:344,s566f:370,photo:396,wx:448};
-const COL={hina:'var(--lamp)',kuro:'var(--violet)',kura:'var(--rust)',s566:'var(--proof)',li8t:'var(--muted)',grp:'var(--rust)',ture:'var(--rust)',s566f:'var(--proof)',photo:'var(--ink)',wx:'var(--muted)'};
-const WHO={hina:'HINA',kuro:'黒帯',kura:'区らしき／ツレ',s566:'566',li8t:'偽物・別トリップ',grp:'区らしき一行',ture:'ツレ',s566f:'566',photo:'画像',wx:'気象'};
+const TMAX=630;
+const hm=t=>{let m=Math.floor(t)+1200;return `${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`};
+const COL={hina:'var(--lamp)',kuro:'var(--violet)',kura:'var(--rust)',s566:'var(--proof)',li8t:'var(--muted)',fact:'var(--proof)'};
+const WHO={hina:'HINA',kuro:'黒帯',kura:'区らしき／ツレ',s566:'566',li8t:'偽物・別トリップ',fact:'実際の流れ'};
+const CHAPS=[[0,'スレ誕生',0,200],[1,'黒帯、出発',200,369],[2,'区らしきの実況',369,475],[3,'ドレミの食い違い',475,590],[4,'夜明け',590,631]];
+const chapOf=t=>CHAPS.find(c=>t>=c[2]&&t<c[3]);
+const NUM=['①','②','③','④','⑤'];
 
+// row: 報告の人物 or 'fact'. name: 当時の名前欄. m: 実際の出来事のとき、同じ頃のスレ
 const EVS=[
- {id:'start',row:'hina',t:10.5,title:'スレが立つ',q:'６人の内一人は行方不明です。本当に',who:'名前欄「GOGO」 ID:hS7H5ala',v:'info',vt:'最初の名前欄はHINAではなく「GOGO」。本文には「入るんじゅなかった」という誤字があり、まとめサイトでは直されている。このIDは21:30までに26レスを書き、メール欄はすべて空欄（age）だった。',viz:{k:'ids',a:0,b:120,lanes:[['ID:hS7H5ala（HINA）','hina','var(--lamp)']]}},
- {id:'hina2',row:'hina',t:90.3,title:'「AM2時頃にまた来ます」',q:'まだシゴト中なんで、ＡＭ２時頃にまたきます！',who:'HINA ◆PhwWyNAAxY',v:'ng',vt:'約束の2時を過ぎても、このIDは二度と書き込まない。3:18に現れた「HINA」は別トリップ（◆AU/OjWxB）の偽物だった。',viz:{k:'gap'}},
- {id:'kuro0',row:'kuro',t:245.1,title:'名無しが「俺が行く」',q:'今から俺がそこに行ってバールのようなもので…',who:'名無し ID:CMs8VNKF',v:'info',vt:'この名無しが38分後に◆tGLUbl280s（黒帯）を名乗る。名無しのうちに「携帯はN503」と書き、出発後は「親父のSH900iを持たされた」と別IDの携帯から書いている。端末が変わることを先に説明しておく周到さ。',viz:{k:'ids',a:230,b:480,lanes:[['ID:CMs8VNKF（家のPC）','kuro',null,[245.1,252.6,264.9,278.3]],['ID:5EQtA/Hr（携帯）','kuro',null,[307.7,334.3,356.4,369.9,391.7,420.6,437.6,451.1,462.1]]]}},
- {id:'kuro1',row:'kuro',t:334.3,title:'黒帯「街灯のお陰で結構明るい」',q:'現場付近到着。街灯のお陰で結構明るい。',who:'黒帯 ◆tGLUbl280s',v:'ok',vt:'当夜は新月の前日で、月明かりはほぼない。「明るいのは街灯のおかげ」という描写は空の状態と合う。ただし倉敷にいた566は、2:50〜3:40に現場付近を回って誰も見ていない。',viz:{k:'moon'}},
- {id:'kura1',row:'kura',t:347.9,title:'区らしき「ほんと近所に住んでる」',q:'俺はほんと近所に住んでるから、ぜんぜん恐くないよ。',who:'区らしき市民 ID:5lxX3mlU',v:'ng',vt:'後年、本人は福山市民だと明かしている。実況の舞台ドレミイン倉敷とは41.6km離れている。',viz:{k:'map'}},
- {id:'kura2',row:'kura',t:368.8,title:'「原チャリで10〜15分で行きます」',q:'いまから、原チャリで10～15分ぐらいで生きます。',who:'区らしき市民 ID:5lxX3mlU',v:'ng',vt:'原チャリ（上限30km/h）で15分なら届くのは半径7.5kmまで。写真の蓋がある福山・草戸町は圏内、ドレミイン倉敷は圏外。このIDの書き込みはこれで最後。',viz:{k:'map',reach:1}},
- {id:'ture1',row:'kura',t:393.9,title:'ツレが代筆を始める',q:'区らしき市民から、「今付いたと！」電話が有ったんですが',who:'区らしき市民のツレ ID:9mnKs2yQ',v:'info',vt:'区らしきと同じトリップ◆34uqを、別のIDが使い始める。以後の実況57レスはすべてこのツレが電話で聞いて書いたもの。区らしき本人は現場から一度も書き込んでいない。',viz:{k:'ids',a:330,b:630,lanes:[['ID:5lxX3mlU（区らしき）','kura'],['ID:9mnKs2yQ（ツレ）','ture']],note:'どちらも ◆34uqqSkMzs'}},
- {id:'reply',row:'kuro',t:437.6,title:'黒帯「今二人組と合流した」',q:'今二人組と合流した。懐中電灯あるので中に入るか検討中。',who:'黒帯 ◆tGLUbl280s',v:'ng',vt:'ツレの「応援の2人と合流」の4分半後に、黒帯が「二人組と合流」と書く。区らしき側は8分後に「黒帯とは合流してない」と否定。黒帯はスレを読んで即興で合わせただけで、2人は連携していない。',viz:{k:'reply'}},
- {id:'fake',row:'li8t',t:444.2,title:'偽黒帯が画像を貼る',q:'（画像URLのみ）',who:'◆tGLaO0f2os ID:16lqnvJ9',v:'ng',vt:'ファイル名の時刻は9/12 19:29:14。スレが立つ41分前にアップ済みの既存画像だった。同じIDは4分後に別の名前で「釣ったどー」と書いている。',viz:{k:'lag',hi:12}},
- {id:'aniki',row:'kura',t:445.8,title:'「兄貴帰ってきました」',q:'兄貴帰ってきました。',who:'ツレ ID:9mnKs2yQ',v:'ng',vt:'3:13に「兄貴が帰る」、3:25に帰着。現場から写真を持って戻るまで12分。写真の蓋（福山）とドレミ（倉敷）の間を12分で移動するには時速208kmが要る。',viz:{k:'speed'}},
- {id:'photo',row:'kura',t:454.3,title:'蓋の写真3枚',q:'とりあえずいちまいです。遅いんで、待って下さいね。',who:'ツレ ID:9mnKs2yQ',v:'ng',vt:'アップ時刻は3:32:15、3:34:19、3:37:05。アップから1〜4分で貼っていて、生の画像の典型。写っている蓋は2007年に福山市草戸町と特定され、区らしき本人も「正解」と認めた。',viz:{k:'lag',hi:0}},
- {id:'water',row:'kura',t:470.1,title:'「鉄板の下では水の音」',q:'鉄板の下では、水の音がするみたいです。',who:'ツレ ID:9mnKs2yQ',v:'ok',vt:'倉敷・福山とも当夜の降水は0mm。雨水の音ではない。2007年の現地確認では、蓋の下は水が溜まる升だった。描写は実物と合う。',viz:{k:'rain'}},
- {id:'ossan',row:'kura',t:481.7,title:'背のこまいおばさん・長野ナンバー',q:'１人は異様に背のこまい人がちゃーちゃーしゃべってるそうです。',who:'ツレ ID:9mnKs2yQ',v:'na',vt:'伝説のキャラクターが生まれた場面。ナンバーの一部、車種、聞き取れた単語など、具体的だが誰にも確かめようのない情報だけでできている。',viz:{k:'none'}},
- {id:'s566a',row:'s566',t:507.6,title:'566「もう一度出動する」',q:'Tシャツ（水色）・チノパン・メガネ着用',who:'566 ◆JKHlRH77ms',v:'info',vt:'倉敷のドレミへ車で向かう566が、目印として車と服装を書き込む。パールツートンのセダン、白いフォグランプ。',viz:{k:'clothes'}},
- {id:'seinen',row:'kura',t:508.9,title:'「歩く青年を見た、566さん？」',q:'あんちゃんが来る途中、歩く青年を見たそうです、566さんですか？黒Tでジーパンですか？',who:'ツレ ID:9mnKs2yQ',v:'ng',vt:'566はこの1分後に「まだ出動してませんよ！」。服装も水色Tにチノパンで、黒Tにジーパンではない。',viz:{k:'clothes'},link:['s566f',509.8]},
- {id:'chaser',row:'kura',t:518.6,title:'「チェイサーがドレミに入った」',q:'今、チェイサーみたいなのがドレミにはいりました。',who:'ツレ ID:9mnKs2yQ',v:'ng',vt:'一行は福山・草戸の蓋の近くにいたと考えられる。41.6km先のドレミの入口は見えない。',viz:{k:'map'},link:['grp',518.6]},
- {id:'car',row:'kura',t:548.1,title:'「上を車が通る音もした」',q:'さっき上を車が通るおともしたそうです',who:'ツレ ID:9mnKs2yQ',v:'ng',vt:'同じ頃、倉敷の橋の上にいた566は、セルシオとアコードの2台が下りていくのを見ている。566本人も「なぜ1台しか気付かなかったのか」と書いた。',viz:{k:'cars'},link:['s566f',548.1]},
- {id:'bkun',row:'kura',t:564.5,title:'「B君がドレミ近くで待機中」',q:'566さんの行った車の特徴の車は通過してないそうです。',who:'ツレ ID:9mnKs2yQ',v:'ng',vt:'566は4:45〜5:50にドレミ前を何度も往復している。B君が本当にそこにいたなら必ず見ている。同じレスの「蚊に刺された」は、気温24℃の夜なのでどこでもありうる。',viz:{k:'meet'},link:['s566f',564.5]},
- {id:'dawn',row:'kura',t:578.4,title:'「もうかなり明るくなってる」',q:'もうかなり明るくなってるから、ヤバイかも',who:'ツレ ID:9mnKs2yQ',v:'na',vt:'市民薄明の始まりは5:20、日の出は5:46。描写は合っているが、福山と倉敷の差は2分しかなく、場所の判別には使えない。',viz:{k:'sky'}},
- {id:'s566b',row:'s566',t:600.5,title:'566「誰にも会わなかった」',q:'ネタか真実かは別として、とにかく俺は誰にも会わなかった。',who:'566 ◆JKHlRH77ms',v:'ok',vt:'倉敷の現場に実際にいたことが確かなのは566だけ。2回出動して、区らしき一行にもB君にも黒帯にも会っていない。',viz:{k:'meet'}},
- {id:'twosec',row:'li8t',t:621.5,title:'2秒差の2つの「区らしき」',q:'兄貴以外いませんよ？',who:'区らしき市民 ◆Li8t1/cSiM ID:sDCjgDxS',v:'info',vt:'6:21:33に◆Li8t、6:21:35にツレが別IDから投稿。ツレはその28秒前に画像をアップしたばかり。一人で両方を書くのはまず無理で、◆Li8tは別人と考えられる。',viz:{k:'twosec'}},
- // ---- 実際の流れ（記録から復元）----
- {id:'f-arrive',row:'grp',t:382,title:'一行、福山・草戸の蓋に着く（推定）',who:'復元',v:'info',vt:'2:08に出発、原チャリで10〜15分。2:33に「今着いた」の電話。福山の蓋なら所要時間が合う。',viz:{k:'map',reach:1}},
- {id:'f-aniki',row:'grp',t:439.4,title:'兄貴、12分で往復',who:'復元',v:'ng',vt:'3:13に現場を出て3:25にツレの家に着き、3:32から写真をアップ。福山の中なら自然、倉敷との往復なら不可能。',viz:{k:'speed'}},
- {id:'f-566a',row:'s566f',t:410,title:'566、ドレミ周辺を探索',who:'566の報告',v:'ok',vt:'2:50に到着、3:40頃まで探索。それらしい車や原付、人影はなし。この時間、黒帯は「蓋の横の雑木に隠れている」と書いていた。',viz:{k:'meet'}},
- {id:'f-566b',row:'s566f',t:527,title:'566、ドレミと橋を往復',who:'566の報告',v:'ok',vt:'4:45頃から5:50頃まで、天城街道からドレミを上がって空き地でUターン、橋まで行って戻るを繰り返した。待機していたはずのB君にも、一行にも会っていない。',viz:{k:'meet'}},
- {id:'f-up',row:'photo',t:452.3,title:'写真アップ 3:32:15',who:'アップローダーのファイル名',v:'info',vt:'img20040913033215 の数字がアップ時刻。投稿は2分後。夜のフラッシュ撮影で、手すりに水滴が付いている。',viz:{k:'lag',hi:0}},
- {id:'f-dew',row:'wx',t:420,title:'露が付きやすい夜（福山）',who:'気象庁 福山',v:'ok',vt:'3時の気温24.2℃、露点22.5℃、湿度90%、風0.7m/s。気温と露点の差が1.7℃しかなく、金属の手すりには露が付く。写真の水滴と合う。雨は降っていない。',viz:{k:'weather'}},
- {id:'f-566photo',row:'photo',t:616.9,title:'566の朝焼けの写真（倉敷）',who:'566',v:'ok',vt:'6:16〜6:17にアップ。5:50頃に橋の上で「明るくなり始めた空」を撮ったもの。倉敷の日の出は5:46。',viz:{k:'sky'}}
-];
+ {id:'start',row:'hina',t:10.5,title:'スレが立つ',name:'GOGO',uid:'hS7H5ala',q:'６人の内一人は行方不明です。本当に',v:'info',vt:'最初の名前欄はHINAではなく「GOGO」。本文の誤字「入るんじゅなかった」は、まとめサイトでは直されている。このIDは21:30までに26レスを書いた。',viz:{k:'ids',a:0,b:120,lanes:[['HINA（ID:hS7H5ala）','hina']]}},
+ {id:'hina2',row:'hina',t:90.3,title:'「AM2時頃にまた来ます」',name:'HINA ◆PhwWyNAAxY',uid:'hS7H5ala',q:'まだシゴト中なんで、ＡＭ２時頃にまたきます！',v:'ng',vt:'約束の2時を過ぎても、このIDは二度と書き込まない。3:18に現れた「HINA」は別トリップの偽物だった。',viz:{k:'gap'}},
+ {id:'kuro0',row:'kuro',t:245.1,title:'名無しが「俺が行く」',name:'本当にあった怖い名無し',uid:'CMs8VNKF',q:'今から俺がそこに行ってバールのようなもので…',v:'info',vt:'この名無しが38分後に黒帯（◆tGLUbl280s）を名乗る。名無しのうちに「携帯はN503」と書き、出発後は「親父のSH900iを持たされた」と別の携帯から書いている。端末が変わる理由を先に用意していた。',viz:{k:'ids',a:230,b:480,lanes:[['家のPC（ID:CMs8VNKF）','kuro',[245.1,252.6,264.9,278.3]],['携帯（ID:5EQtA/Hr）','kuro',[307.7,334.3,356.4,369.9,391.7,420.6,437.6,451.1,462.1]]]}},
+ {id:'kuro1',row:'kuro',t:334.3,title:'「街灯のお陰で結構明るい」',name:'黒帯 ◆tGLUbl280s',uid:'5EQtA/Hr',q:'現場付近到着。街灯のお陰で結構明るい。',v:'ok',vt:'当夜は新月の前日で、月明かりはほぼない。「明るいのは街灯のおかげ」は空の状態と合う。ただし倉敷にいた566は、2:50〜3:40に現場を回って誰も見ていない。',viz:{k:'moon'}},
+ {id:'kura1',row:'kura',t:347.9,title:'「ほんと近所に住んでる」',name:'区らしき市民',uid:'5lxX3mlU',q:'俺はほんと近所に住んでるから、ぜんぜん恐くないよ。',v:'ng',vt:'後年、本人は福山市民だと明かしている。実況の舞台ドレミイン倉敷とは41.6km離れている。',viz:{k:'map'}},
+ {id:'kura2',row:'kura',t:368.8,title:'「原チャリで10〜15分で行きます」',name:'区らしき市民 ◆34uqqSkMzs',uid:'5lxX3mlU',q:'いまから、原チャリで10～15分ぐらいで生きます。',v:'ng',vt:'原チャリ（上限30km/h）で15分なら届くのは半径7.5kmまで。写真の蓋がある福山・草戸町は圏内、ドレミイン倉敷は圏外。このIDの書き込みはこれが最後。',viz:{k:'map',reach:1}},
+ {id:'f-arrive',row:'fact',t:382,title:'一行、福山・草戸の蓋に着く',m:['黒帯 02:09','多分下には複数人？いるぽい。'],v:'info',vt:'2:08に出発して原チャリで10〜15分。2:33に「今着いた」と電話が来る。福山の蓋なら所要時間がちょうど合う（推定）。',viz:{k:'map',reach:1}},
+ {id:'ture1',row:'kura',t:393.9,title:'ツレが代わりに書き始める',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'区らしき市民から、「今付いたと！」電話が有ったんですが',v:'info',vt:'区らしきと同じトリップ◆34uqを、別のIDが使い始める。以後の実況57レスはすべて、ツレが電話で聞いて書いたもの。区らしき本人は現場から一度も書き込んでいない。',viz:{k:'ids',a:330,b:630,lanes:[['区らしき（5lxX3mlU）','kura',POSTS.kura],['ツレ（9mnKs2yQ）','kura',POSTS.ture]],note:'どちらも ◆34uqqSkMzs'}},
+ {id:'f-566a',row:'fact',t:410,title:'566、倉敷のドレミ周辺を探索',m:['黒帯 03:00','今は蓋の横の雑木に紛れて隠れてる。'],v:'ok',vt:'566は2:50に到着し、3:40頃まで探した。それらしい車や原付、人影はなし。同じ頃、黒帯は「蓋の横に隠れている」と書いていた。',viz:{k:'meet'}},
+ {id:'f-dew',row:'fact',t:420,title:'露が付きやすい夜だった（福山）',m:['ツレ 03:05','蓋が溶接去れてるそうです。'],v:'ok',vt:'福山の3時は気温24.2℃、露点22.5℃、湿度90%、風0.7m/s。気温と露点の差が1.7℃しかなく、金属の手すりには露が付く。写真の水滴と合う。雨は降っていない。',viz:{k:'weather'}},
+ {id:'reply',row:'kuro',t:437.6,title:'黒帯「今二人組と合流した」',name:'黒帯 ◆tGLUbl280s',uid:'5EQtA/Hr',q:'今二人組と合流した。懐中電灯あるので中に入るか検討中。',v:'ng',vt:'ツレの「応援の2人と合流」から4分半後に、黒帯が「二人組と合流」と書く。区らしき側は8分後に「黒帯とは合流してない」と否定。黒帯はスレを読んで話を合わせただけで、2人は連携していない。',viz:{k:'reply'}},
+ {id:'f-aniki',row:'fact',t:439.4,title:'兄貴、12分で写真を持ち帰る',m:['ツレ 03:13','兄貴が写真もって帰ったら、うpろいます'],v:'ng',vt:'3:13に現場を出て、3:25にツレの家に着いた。福山の中なら自然な時間。倉敷との往復なら時速208kmが要る。',viz:{k:'speed'}},
+ {id:'fake',row:'li8t',t:444.2,title:'偽の黒帯が画像を貼る',name:'tGLaO0f2os ◆tGLaO0f2os',uid:'16lqnvJ9',q:'（画像のURLだけ）',v:'ng',vt:'ファイル名の時刻は9/12 19:29:14。スレが立つ41分前にアップ済みの既存画像だった。同じIDが4分後に別の名前で「釣ったどー」と書いている。',viz:{k:'lag',hi:[12]}},
+ {id:'aniki',row:'kura',t:445.8,title:'「兄貴帰ってきました」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'兄貴帰ってきました。',v:'ng',vt:'3:13に「兄貴が帰る」、3:25に帰着。現場から写真を持って戻るまで12分。写真の蓋（福山）とドレミ（倉敷）の間を12分で移動するには時速208kmが要る。',viz:{k:'speed'}},
+ {id:'f-up',row:'fact',t:452.3,title:'写真がアップされる（3:32:15）',m:['ツレ 03:34','とりあえずいちまいです。'],v:'info',vt:'ファイル名 img20040913033215 の数字がアップ時刻。投稿はその2分後。夜にフラッシュで撮った写真で、手すりに水滴が付いている。',viz:{k:'lag',hi:[0,1,2]}},
+ {id:'photo',row:'kura',t:454.3,title:'蓋の写真3枚',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'とりあえずいちまいです。遅いんで、待って下さいね。',v:'ng',vt:'アップから1〜4分で貼っていて、撮ったばかりの画像の典型。ただし写っている蓋は2007年に福山市草戸町と特定され、区らしき本人も「正解」と認めた。',viz:{k:'map'}},
+ {id:'water',row:'kura',t:470.1,title:'「鉄板の下では水の音」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'鉄板の下では、水の音がするみたいです。',v:'ok',vt:'倉敷・福山とも当夜の降水は0mm。雨水の音ではない。2007年の現地確認では、蓋の下は水が溜まる升だった。描写は実物と合う。',viz:{k:'rain'}},
+ {id:'ossan',row:'kura',t:481.7,title:'背のこまいおばさん、長野ナンバー',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'１人は異様に背のこまい人がちゃーちゃーしゃべってるそうです。',v:'na',vt:'伝説のキャラクターが生まれた場面。ナンバーの一部、車種、聞き取れた単語など、具体的だが誰にも確かめようのない情報だけでできている。',viz:{k:'none'}},
+ {id:'s566a',row:'s566',t:507.6,title:'566「もう一度出動する」',name:'566 ◆JKHlRH77ms',uid:'O/eDLk2s',q:'こちらはTシャツ（水色）・チノパン・メガネ着用',v:'info',vt:'倉敷のドレミへ車で向かう566が、目印に車と服装を書き込む。パールツートンのセダン、白いフォグランプ。',viz:{k:'clothes'}},
+ {id:'seinen',row:'kura',t:508.9,title:'「歩く青年を見た。566さん？」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'歩く青年を見たそうです、566さんですか？黒Tでジーパンですか？',v:'ng',vt:'566はこの1分後に「まだ出動してませんよ！」と返している。服装も水色Tにチノパンで、黒Tにジーパンではない。',viz:{k:'clothes'}},
+ {id:'chaser',row:'kura',t:518.6,title:'「チェイサーがドレミに入った」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'今、チェイサーみたいなのがドレミにはいりました。',v:'ng',vt:'一行は福山・草戸の蓋の近くにいたと考えられる。41.6km先のドレミの入口は見えない。',viz:{k:'map'}},
+ {id:'f-566b',row:'fact',t:527,title:'566、ドレミと橋を何度も往復',m:['ツレ 04:38','今、チェイサーみたいなのがドレミにはいりました。'],v:'ok',vt:'566は4:45頃から5:50頃まで、天城街道からドレミへ上がり、空き地でUターンし、橋まで行って戻る、を繰り返した。一行にも、待機していたはずのB君にも会っていない。',viz:{k:'meet'}},
+ {id:'car',row:'kura',t:548.1,title:'「上を車が通る音もした」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'さっき上を車が通るおともしたそうです',v:'ng',vt:'同じ頃、倉敷の橋の上にいた566は、セルシオとアコードの2台が下りていくのを見ている。566本人も「なぜ1台しか気付かなかったのか」と書いた。',viz:{k:'cars'}},
+ {id:'bkun',row:'kura',t:564.5,title:'「B君がドレミ近くで待機中」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'566さんの行った車の特徴の車は通過してないそうです。',v:'ng',vt:'566はこの時間、ドレミ前を何度も往復している。B君が本当にそこにいたなら必ず見ている。同じレスの「蚊に刺された」は、気温24℃の夜なのでどこでもありうる。',viz:{k:'meet'}},
+ {id:'dawn',row:'kura',t:578.4,title:'「もうかなり明るくなってる」',name:'区らしき市民のツレです。',uid:'9mnKs2yQ',q:'もうかなり明るくなってるから、ヤバイかも',v:'na',vt:'市民薄明の始まりは5:20、日の出は5:46。描写は合っているが、福山と倉敷の差は2分しかなく、場所の判別には使えない。',viz:{k:'sky'}},
+ {id:'s566b',row:'s566',t:600.5,title:'566「誰にも会わなかった」',name:'566 ◆JKHlRH77ms',uid:'b57i9CNK',q:'ネタか真実かは別として、とにかく俺は誰にも会わなかった。',v:'ok',vt:'倉敷の現場に実際にいたことが確かなのは566だけ。2回出動して、区らしき一行にもB君にも黒帯にも会っていない。',viz:{k:'meet'}},
+ {id:'f-566photo',row:'fact',t:616.9,title:'566が朝焼けの写真をアップ（倉敷）',m:['566 06:13','明るくなり始めた空がきれいだったので撮影'],v:'ok',vt:'6:16〜6:17にアップ。5:50頃に倉敷の橋の上で撮ったもの。倉敷の日の出は5:46で、写真の空と合う。',viz:{k:'sky'}},
+ {id:'twosec',row:'li8t',t:621.5,title:'2秒差の2つの「区らしき」',name:'区らしき市民 ◆Li8t1/cSiM',uid:'sDCjgDxS',q:'兄貴以外いませんよ？',v:'info',vt:'6:21:33に◆Li8t、6:21:35にツレが別のIDから投稿。ツレはその28秒前に画像をアップしたばかり。一人で両方を書くのはまず無理で、◆Li8tは別人と考えられる。',viz:{k:'twosec'}}
+].sort((a,b)=>a.t-b.t);
 
-function buildMain(){
-  const RY=70,RH=56; // rate area: baseline y=RY+RH
-  let g=`<defs><linearGradient id="skyg" x1="0" x2="1" y1="0" y2="0">
-   <stop offset="0" style="stop-color:var(--sky-night)"/><stop offset="${(531/TMAX).toFixed(3)}" style="stop-color:var(--sky-night)"/>
-   <stop offset="${(560/TMAX).toFixed(3)}" style="stop-color:var(--sky-dawn)"/><stop offset="${(586/TMAX).toFixed(3)}" style="stop-color:var(--sky-day)"/><stop offset="1" style="stop-color:var(--sky-day)"/></linearGradient></defs>`;
-  // hour grid
-  for(let t=0;t<=600;t+=60) g+=`<line x1="${X(t)}" y1="14" x2="${X(t)}" y2="${H-14}" stroke="var(--line)"/>`;
-  // rate area
-  const yb=RY+RH,ys=v=>yb-v/180*RH;
-  let p=`M${X(10)},${yb}`;RATE.forEach(([t,v])=>p+=` L${X(t+5)},${ys(v)}`);p+=` L${X(625)},${yb}Z`;
-  g+=`<path d="${p}" fill="var(--rust)" opacity=".22"/><path d="${RATE.map(([t,v],i)=>`${i?'L':'M'}${X(t+5)},${ys(v)}`).join(' ')}" fill="none" stroke="var(--rust)" stroke-width="1.4"/>`;
-  g+=`<text x="${X(545)}" y="${ys(180)-4}" text-anchor="middle" font-size="11" fill="var(--rust)" font-family="JetBrains Mono,monospace">5:00台 180レス/10分</text>`;
-  g+=`<text x="${X(12)}" y="${RY+6}" font-size="11" fill="var(--muted)" font-family="Zen Kaku Gothic New,sans-serif">スレの勢い（10分ごとのレス数）</text>`;
-  // lane headings
-  g+=`<text x="${X(2)}" y="${92}" font-size="12" font-weight="700" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">▲ スレでの報告</text>`;
-  g+=`<text x="${X(2)}" y="${298}" font-size="12" font-weight="700" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">▼ 実際の流れ（記録から復元）</text>`;
-  // row guides
-  for(const r of ['hina','kuro','kura','s566','li8t','grp','ture','s566f','photo']) g+=`<line x1="${X0}" y1="${ROW[r]}" x2="${W-X0}" y2="${ROW[r]}" stroke="var(--line)" stroke-dasharray="1 5"/>`;
-  // sky band + hour labels
-  g+=`<rect x="${X0}" y="236" width="${TMAX*K}" height="34" fill="url(#skyg)"/>`;
-  for(let t=0;t<=600;t+=60) g+=`<text x="${X(t)+4}" y="257" font-size="12" fill="var(--on-sky)" font-family="JetBrains Mono,monospace">${hm(t)}</text>`;
-  [[531,'航海薄明'],[560,'市民薄明'],[586,'日の出']].forEach(([t,l])=>g+=`<line x1="${X(t)}" y1="236" x2="${X(t)}" y2="270" stroke="var(--on-sky)" opacity=".7"/><text x="${X(t)+3}" y="267" font-size="9" fill="var(--on-sky)" font-family="Zen Kaku Gothic New,sans-serif">${l}</text>`);
-  g+=`<text x="${X(100)}" y="257" font-size="11" fill="var(--on-sky)" font-family="Zen Kaku Gothic New,sans-serif">● 月なし（9/14新月）</text>`;
-  // all posts as faint dots
-  const pr={hina:'hina',kuro:'kuro',kura:'kura',ture:'kura',s566:'s566',li8t:'li8t',fake:'li8t'};
-  const pc={hina:'var(--lamp)',kuro:'var(--violet)',kura:'var(--rust)',ture:'var(--rust)',s566:'var(--proof)',li8t:'var(--muted)',fake:'var(--muted)'};
-  for(const k in POSTS) for(const t of POSTS[k]) g+=`<circle cx="${X(t)}" cy="${ROW[pr[k]]}" r="2.6" fill="${pc[k]}" opacity=".55"/>`;
-  // fact bars
-  const bar=(row,a,b,label,col,dash)=>`<rect x="${X(a)}" y="${ROW[row]-7}" width="${(b-a)*K}" height="14" rx="2" fill="${col}" opacity="${dash?.25:.32}" ${dash?'stroke="'+col+'" stroke-dasharray="3 3"':''}/>`+(label?`<text x="${X(a)+14}" y="${ROW[row]+4}" font-size="10.5" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">${label}</text>`:'');
-  g+=bar('grp',343,369,'福山の自宅','var(--rust)',1)+bar('grp',382,600,'福山・草戸の蓋のまわり（写真の場所）','var(--rust)');
-  g+=`<path d="M${X(433.1)},${ROW.grp-8} Q${X(439.4)},${ROW.grp-26} ${X(445.8)},${ROW.grp-8}" fill="none" stroke="var(--rust)" stroke-width="1.6"/><text x="${X(439.4)}" y="${ROW.grp-21}" text-anchor="middle" font-size="9.5" fill="var(--rust)" font-family="JetBrains Mono,monospace">12分</text>`;
-  g+=bar('ture',393.9,623,'ツレの家のPCで代筆（電話で中継）','var(--rust)',1);
-  g+=bar('s566f',393.9,410,'','var(--proof)',1)+bar('s566f',410,460,'倉敷 ドレミ周辺','var(--proof)')+bar('s566f',460,474.9,'','var(--proof)',1)+bar('s566f',512,527,'','var(--proof)',1)+bar('s566f',527,590,'倉敷 ドレミ〜橋を往復','var(--proof)')+bar('s566f',590,596.5,'','var(--proof)',1);
-  // photo uploads
-  [[452.3,454.3],[454.3,458.4],[457.1,458.4],[616.9,623]].forEach(([u,p])=>g+=`<line x1="${X(u)}" y1="${ROW.photo}" x2="${X(p)}" y2="${ROW.photo}" stroke="var(--ink)"/><rect x="${X(u)-3}" y="${ROW.photo-3}" width="6" height="6" fill="var(--ink)"/>`);
-  g+=`<text x="${X(14)}" y="${ROW.photo+4}" font-size="10.5" fill="var(--rust)" font-family="Zen Kaku Gothic New,sans-serif">← 偽黒帯の画像は 19:29（スレ前）にアップ済み</text>`;
-  // weather: Fukuyama temp & dew 1-6時
-  const wy=v=>ROW.wx+24-(v-21)/4*44, wt=i=>X((i+5)*60);
-  const ln=a=>a.map((v,i)=>`${i?'L':'M'}${wt(i)},${wy(v)}`).join(' ');
-  g+=`<path d="${ln(FK.t)} L${FK.d.map((v,i)=>`${wt(5-i)},${wy(FK.d[5-i])}`).join(' L')}Z" fill="var(--proof)" opacity=".15"/>`;
-  g+=`<path d="${ln(FK.t)}" fill="none" stroke="var(--rust)" stroke-width="1.6"/><path d="${ln(FK.d)}" fill="none" stroke="var(--proof)" stroke-width="1.6"/>`;
-  g+=`<text x="${wt(0)-6}" y="${wy(24.7)+4}" text-anchor="end" font-size="10" fill="var(--rust)" font-family="Zen Kaku Gothic New,sans-serif">気温</text><text x="${wt(0)-6}" y="${wy(22.6)+8}" text-anchor="end" font-size="10" fill="var(--proof)" font-family="Zen Kaku Gothic New,sans-serif">露点</text>`;
-  g+=`<text x="${X(14)}" y="${ROW.wx+4}" font-size="10.5" fill="var(--muted)" font-family="Zen Kaku Gothic New,sans-serif">福山の1〜6時（気象庁）。降水は倉敷・福山とも0mm。帯が細いほど露が付きやすい</text>`;
-  // connectors
-  for(const e of EVS) if(e.link) g+=`<line class="conn" data-for="${e.id}" x1="${X(e.t)}" y1="${ROW[e.row]+8}" x2="${X(e.link[1])}" y2="${ROW[e.link[0]]-8}"/>`;
-  // events
-  for(const e of EVS){const cx=X(e.t),cy=ROW[e.row],c=e.v==='ng'?'var(--rust)':COL[e.row];
-    g+=`<g class="ev" data-id="${e.id}" tabindex="0" role="button" aria-label="${hm(e.t)} ${e.title}"><circle class="hit" cx="${cx}" cy="${cy}" r="14"/><circle class="ring" cx="${cx}" cy="${cy}" r="11"/><circle class="dot" cx="${cx}" cy="${cy}" r="6.5" fill="${c}" stroke="var(--paper)" stroke-width="1.5"/></g>`;}
-  return `<svg class="main" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="group" aria-label="2004年9月12日20時から13日6時30分までのタイムライン">${g}</svg>`;
-}
-function buildLabels(){
-  let g='';
-  const L=[['hina','HINA'],['kuro','黒帯'],['kura','区らしき／ツレ'],['s566','566'],['li8t','偽物・別トリップ'],['grp','区らしき一行'],['ture','ツレ'],['s566f','566の居場所'],['photo','画像のアップ'],['wx','当夜の気象']];
-  for(const [r,l] of L) g+=`<circle cx="12" cy="${ROW[r]}" r="4" fill="${COL[r]}"/><text x="22" y="${ROW[r]+4}" font-size="11.5" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">${l}</text>`;
-  g+=`<text x="10" y="40" font-size="11" fill="var(--muted)" font-family="Zen Kaku Gothic New,sans-serif">勢い</text>`;
-  g+=`<text x="10" y="257" font-size="11" fill="var(--muted)" font-family="Zen Kaku Gothic New,sans-serif">時刻・空</text>`;
-  return `<svg class="lab" width="${LW}" height="${H}" viewBox="0 0 ${LW} ${H}" aria-hidden="true">${g}</svg>`;
-}
-
-// ---- detail visualizations ----
+// ---- 検証の図（幅360基準・スマホで読める文字サイズ）----
 const F='font-family="Zen Kaku Gothic New,sans-serif"',M='font-family="JetBrains Mono,monospace"';
-const sv=(h,inner)=>`<svg viewBox="0 0 520 ${h}" role="img">${inner}</svg>`;
+const sv=(h,inner,label)=>`<svg viewBox="0 0 360 ${h}" role="img" aria-label="${label||''}">${inner}</svg>`;
+const tx=(x,y,s,o={})=>`<text x="${x}" y="${y}" font-size="${o.fs||13}" fill="${o.c||'var(--ink)'}" ${o.a?`text-anchor="${o.a}"`:''} ${o.w?`font-weight="${o.w}"`:''} ${o.m?M:F}>${s}</text>`;
 const VZ={
- none:()=>sv(70,`<rect x="0" y="10" width="520" height="50" fill="var(--night)"/><text x="260" y="41" text-anchor="middle" font-size="14" fill="var(--muted)" ${F}>確かめられる記録がない情報（ナンバーの一部・聞き取った単語など）</text>`),
- map:o=>{const kx=110,ky=150,dx=470,dy=40,km=Math.hypot(dx-kx,dy-ky)/41.6;let s='';
-   if(o.reach) s+=`<circle cx="${kx}" cy="${ky}" r="${7.5*km}" fill="var(--rust)" opacity=".14" stroke="var(--rust)" stroke-dasharray="4 4"/><text x="${kx}" y="${ky+7.5*km+16}" text-anchor="middle" font-size="13" fill="var(--rust)" ${F}>原チャリ15分圏（半径7.5km）</text>`;
+ none:()=>sv(70,`<rect x="0" y="6" width="360" height="58" rx="4" fill="var(--night)"/>${tx(180,32,'確かめられる記録がない',{a:'middle',c:'var(--muted)',fs:14})}${tx(180,52,'ナンバーの一部・聞き取った単語など',{a:'middle',c:'var(--muted)',fs:12})}`,'検証材料なし'),
+ map:o=>{const kx=100,ky=o.reach?118:110,dx=320,dy=34,km=Math.hypot(dx-kx,dy-ky)/41.6;let s='';
+   if(o.reach) s+=`<circle cx="${kx}" cy="${ky}" r="${7.5*km}" fill="var(--rust)" opacity=".14" stroke="var(--rust)" stroke-dasharray="4 4"/>`+tx(kx,ky+7.5*km+18,'原チャリ15分圏（半径7.5km）',{a:'middle',c:'var(--rust)',fs:12});
    s+=`<line x1="${kx}" y1="${ky}" x2="${dx}" y2="${dy}" stroke="var(--muted)" stroke-dasharray="5 6"/><circle cx="${kx}" cy="${ky}" r="7" fill="var(--rust)"/><circle cx="${dx}" cy="${dy}" r="7" fill="var(--proof)"/>`;
-   s+=`<text x="${kx+12}" y="${ky-10}" font-size="15" font-weight="700" fill="var(--ink)" ${F}>福山・草戸の蓋</text><text x="${dx-10}" y="${dy-14}" text-anchor="end" font-size="15" font-weight="700" fill="var(--ink)" ${F}>ドレミイン倉敷</text>`;
-   s+=`<text x="${(kx+dx)/2+20}" y="${(ky+dy)/2+22}" font-size="20" font-weight="600" fill="var(--rust)" ${M}>41.6 km</text>`;
-   return sv(o.reach?275:200,s)},
- speed:()=>{const items=[['原チャリ（法定上限）',30,'var(--muted)'],['一般道の車',60,'var(--muted)'],['12分で移動するのに必要',208,'var(--rust)']];let s='';
-   items.forEach(([l,v,c],i)=>{const y=24+i*52;s+=`<text x="0" y="${y}" font-size="12" fill="var(--ink)" ${F}>${l}</text><rect x="0" y="${y+8}" width="${v/220*440}" height="18" fill="${c}"/><text x="${v/220*440+8}" y="${y+22}" font-size="13" fill="var(--ink)" ${M}>${v} km/h</text>`});
-   return sv(170,s)},
- ids:o=>{const a=o.a,b=o.b,x=t=>20+(t-a)/(b-a)*480;let s='';
-   o.lanes.forEach(([l,k,c,ts],i)=>{const y=30+i*50,pts=ts||POSTS[k],col=c||COL[k]||'var(--rust)';
-     s+=`<text x="20" y="${y-10}" font-size="12" fill="var(--ink)" ${F}>${l}　${pts.length}レス</text><line x1="20" y1="${y}" x2="500" y2="${y}" stroke="var(--line)"/>`;
-     pts.forEach(t=>{if(t>=a&&t<=b)s+=`<circle cx="${x(t)}" cy="${y}" r="4" fill="${col}"/>`})});
-   const yy=30+o.lanes.length*50-14;for(let t=Math.ceil(a/60)*60;t<=b;t+=60)s+=`<text x="${x(t)}" y="${yy}" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${hm(t)}</text>`;
-   if(o.note)s+=`<text x="500" y="${yy+18}" text-anchor="end" font-size="12" fill="var(--rust)" ${F}>${o.note}</text>`;
-   return sv(30+o.lanes.length*50+(o.note?14:0),s)},
- gap:()=>{const x=t=>20+t/630*480;let s=`<line x1="20" y1="60" x2="500" y2="60" stroke="var(--line)"/>`;
-   POSTS.hina.forEach(t=>s+=`<circle cx="${x(t)}" cy="60" r="4" fill="var(--lamp)"/>`);
-   s+=`<rect x="${x(90.3)}" y="53" width="${x(630)-x(90.3)}" height="14" fill="var(--rust)" opacity=".12"/><line x1="${x(360)}" y1="34" x2="${x(360)}" y2="76" stroke="var(--rust)" stroke-width="2"/><text x="${x(360)}" y="26" text-anchor="middle" font-size="12" fill="var(--rust)" ${F}>約束の2:00</text><text x="${x(360)}" y="96" text-anchor="middle" font-size="12" fill="var(--muted)" ${F}>このIDの書き込み 0件</text>`;
-   [0,240,480,600].forEach(t=>s+=`<text x="${x(t)}" y="118" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${hm(t)}</text>`);return sv(126,s)},
- moon:()=>sv(150,`<circle cx="80" cy="75" r="56" fill="var(--on-sky)"/><circle cx="87" cy="75" r="56" fill="var(--sky-night)"/><circle cx="80" cy="75" r="56" fill="none" stroke="var(--line)"/><text x="170" y="56" font-size="15" font-weight="700" fill="var(--ink)" ${F}>月齢 約28・輝面 約2%</text><text x="170" y="82" font-size="13" fill="var(--muted)" ${F}>9月14日が新月。夜のあいだ月は出ていない</text><text x="170" y="106" font-size="13" fill="var(--muted)" ${F}>明かりは街灯と懐中電灯だけ</text>`),
- rain:()=>{let s='';['倉敷','福山'].forEach((c,i)=>{const y=40+i*56;s+=`<text x="0" y="${y}" font-size="12" fill="var(--ink)" ${F}>${c}</text>`;for(let h=1;h<=6;h++){const x=60+(h-1)*72;s+=`<line x1="${x}" y1="${y+10}" x2="${x+56}" y2="${y+10}" stroke="var(--proof)" stroke-width="3"/><text x="${x+28}" y="${y}" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${h}時 0.0</text>`}});
-   return sv(140,s+`<text x="0" y="134" font-size="12" fill="var(--muted)" ${F}>降水量（mm）。一晩じゅう雨は降っていない</text>`)},
- lag:o=>{const L=[['区らしき 蓋①',2.08],['区らしき 蓋②',4.13],['区らしき 蓋③',1.37],['名無し gif',1.02],['566 柵',1.32],['名無し',0.97],['名無し',1.70],['名無し',3.92],['ツレ 車①',1.87],['ツレ 車②',0.47],['566 橋①',6.1],['566 橋②',5.08],['偽黒帯 ◆tGLaO',475,1],['名無し（テニスの人）',603,1]];
-   const x=v=>150+(Math.log10(v)-Math.log10(.3))/(Math.log10(1000)-Math.log10(.3))*350;let s='';
-   [1,10,60,600].forEach(t=>s+=`<line x1="${x(t)}" y1="4" x2="${x(t)}" y2="${L.length*16+6}" stroke="var(--line)"/><text x="${x(t)}" y="${L.length*16+20}" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${t<60?t+'分':t/60+'時間'}</text>`);
-   L.forEach((d,i)=>{const y=12+i*16,hi=i===o.hi||(o.hi===0&&i<3),c=d[2]?'var(--rust)':'var(--proof)';s+=`<text x="142" y="${y+4}" text-anchor="end" font-size="11" fill="var(--ink)" font-weight="${hi?700:400}" ${F}>${d[0]}</text><line x1="150" y1="${y}" x2="${x(d[1])}" y2="${y}" stroke="${c}" stroke-width="${hi?4:2}" opacity="${hi?1:.45}"/><circle cx="${x(d[1])}" cy="${y}" r="${hi?5:3}" fill="${c}" opacity="${hi?1:.6}"/>`});
-   return sv(L.length*16+28,s)},
- clothes:()=>{const fig=(x,l,sh,pa,glass)=>`<circle cx="${x}" cy="30" r="13" fill="none" stroke="var(--muted)" stroke-width="2"/>${glass?`<line x1="${x-9}" y1="30" x2="${x+9}" y2="30" stroke="var(--ink)" stroke-width="2"/>`:''}<rect x="${x-22}" y="48" width="44" height="46" rx="6" fill="${sh}" stroke="var(--line)"/><rect x="${x-18}" y="96" width="16" height="52" fill="${pa}" stroke="var(--line)"/><rect x="${x+2}" y="96" width="16" height="52" fill="${pa}" stroke="var(--line)"/><text x="${x}" y="172" text-anchor="middle" font-size="12" fill="var(--ink)" ${F}>${l}</text>`;
-   return sv(200,fig(110,'ツレの報告：黒T・ジーパン','#1e1e1e','#3b5a85')+fig(390,'566本人：水色T・チノパン・メガネ','#8ccbe8','#c8b48a',1)+`<text x="250" y="96" text-anchor="middle" font-size="22" fill="var(--rust)" ${M}>≠</text><text x="250" y="194" text-anchor="middle" font-size="11" fill="var(--muted)" ${F}>しかもその時刻、566はまだ家にいた</text>`)},
- cars:()=>{const car=(x,y,l)=>`<rect x="${x}" y="${y}" width="70" height="22" rx="7" fill="var(--muted)"/><rect x="${x+14}" y="${y-12}" width="40" height="14" rx="5" fill="var(--muted)"/><circle cx="${x+16}" cy="${y+22}" r="6" fill="var(--ink)"/><circle cx="${x+54}" cy="${y+22}" r="6" fill="var(--ink)"/><text x="${x+35}" y="${y+46}" text-anchor="middle" font-size="11" fill="var(--ink)" ${F}>${l}</text>`;
-   return sv(130,`<text x="0" y="18" font-size="12" fill="var(--rust)" ${F}>ツレの報告：1台</text>${car(20,50,'1台')}<text x="250" y="18" font-size="12" fill="var(--proof)" ${F}>566が橋の上で見た：2台</text>${car(250,50,'セルシオ')}${car(360,50,'アコード')}`)},
- meet:()=>{const a=380,b=630,x=t=>20+(t-a)/(b-a)*480;let s='';
-   s+=`<text x="20" y="20" font-size="12" fill="var(--proof)" ${F}>566（倉敷・ドレミ周辺にいた時間）</text>`;[[410,460],[527,590]].forEach(([p,q])=>s+=`<rect x="${x(p)}" y="28" width="${x(q)-x(p)}" height="16" fill="var(--proof)" opacity=".5"/>`);
-   s+=`<text x="20" y="72" font-size="12" fill="var(--rust)" ${F}>ツレの報告で「ドレミ」が出た時刻</text>`;[[502.4,'潜んでる'],[518.6,'チェイサー'],[564.5,'B君待機'],[580.5,'ドレミ方向']].forEach(([t,l],i)=>s+=`<circle cx="${x(t)}" cy="88" r="5" fill="var(--rust)"/><text x="${x(t)}" y="${108+(i%2)*13}" text-anchor="middle" font-size="10" fill="var(--rust)" ${F}>${l}</text>`);
-   s+=`<text x="500" y="152" text-anchor="end" font-size="16" font-weight="700" fill="var(--ink)" ${F}>出会えた回数 0</text>`;
-   [420,480,540,600].forEach(t=>s+=`<text x="${x(t)}" y="152" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${hm(t)}</text>`);return sv(162,s)},
- sky:()=>{const a=480,b=660,x=t=>20+(t-a)/(b-a)*480;let s=`<defs><linearGradient id="sk2" x1="0" x2="1"><stop offset="0" style="stop-color:var(--sky-night)"/><stop offset="${(531-a)/(b-a)}" style="stop-color:var(--sky-night)"/><stop offset="${(560-a)/(b-a)}" style="stop-color:var(--sky-dawn)"/><stop offset="${(586-a)/(b-a)}" style="stop-color:var(--sky-day)"/><stop offset="1" style="stop-color:var(--sky-day)"/></linearGradient></defs><rect x="20" y="30" width="480" height="50" fill="url(#sk2)"/>`;
-   [[531,'航海薄明 4:51'],[560,'市民薄明 5:20'],[586,'日の出 5:46']].forEach(([t,l],i)=>s+=`<line x1="${x(t)}" y1="26" x2="${x(t)}" y2="84" stroke="var(--on-sky)"/><text x="${x(t)}" y="${100+i*14}" text-anchor="middle" font-size="11" fill="var(--ink)" ${F}>${l}</text>`);
-   s+=`<circle cx="${x(578.4)}" cy="55" r="6" fill="var(--rust)" stroke="var(--on-sky)" stroke-width="2"/><text x="${x(578.4)}" y="20" text-anchor="middle" font-size="11" fill="var(--rust)" ${F}>「かなり明るい」5:38</text>`;
-   return sv(150,s+`<text x="20" y="146" font-size="11" fill="var(--muted)" ${F}>倉敷と福山の日の出の差は約2分</text>`)},
- twosec:()=>{const x=s=>20+s/45*480;let g=`<line x1="20" y1="70" x2="500" y2="70" stroke="var(--line)"/>`;
-   [[7,'画像アップ（ツレ）','var(--muted)',40],[33,'◆Li8t 投稿','var(--violet)',112],[35,'ツレ 投稿','var(--rust)',40]].forEach(([t,l,c,y])=>g+=`<line x1="${x(t)}" y1="70" x2="${x(t)}" y2="${y<70?y+6:y-14}" stroke="${c}"/><circle cx="${x(t)}" cy="70" r="6" fill="${c}"/><text x="${x(t)}" y="${y}" text-anchor="middle" font-size="12" fill="${c}" ${F}>${l}</text>`);
-   [0,15,30,45].forEach(t=>g+=`<text x="${x(t)}" y="138" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>6:21:${String(t).padStart(2,'0')}</text>`);
-   return sv(146,g+`<text x="${x(34)}" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" ${M}>2秒</text>`)},
- reply:()=>{const a=430,b=448,x=t=>40+(t-a)/(b-a)*440;let s=`<line x1="40" y1="60" x2="480" y2="60" stroke="var(--line)"/>`;
-   [[433.1,'ツレ「応援の2人と合流」','var(--rust)',34],[437.6,'黒帯「二人組と合流」','var(--violet)',96],[445.8,'ツレ「黒帯とは合流してない」','var(--rust)',34]].forEach(([t,l,c,y])=>s+=`<circle cx="${x(t)}" cy="60" r="6" fill="${c}"/><text x="${x(t)}" y="${y}" text-anchor="middle" font-size="11.5" fill="${c}" ${F}>${l}</text>`);
-   s+=`<path d="M${x(433.1)},68 Q${x(435.3)},84 ${x(437.6)},68" fill="none" stroke="var(--muted)"/><text x="${x(435.3)}" y="118" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>4分30秒後</text>`;
-   [432,438,444].forEach(t=>s+=`<text x="${x(t)}" y="140" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${hm(t)}</text>`);return sv(148,s)},
- weather:()=>{const x=i=>40+i*90,y=v=>130-(v-21)/4.5*110;let s='';
-   s+=`<path d="${FK.t.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ')} L${FK.d.map((v,i)=>`${x(5-i)},${y(FK.d[5-i])}`).join(' L')}Z" fill="var(--proof)" opacity=".18"/>`;
-   s+=`<path d="${FK.t.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ')}" fill="none" stroke="var(--rust)" stroke-width="2"/><path d="${FK.d.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ')}" fill="none" stroke="var(--proof)" stroke-width="2"/>`;
-   FK.t.forEach((v,i)=>s+=`<text x="${x(i)}" y="150" text-anchor="middle" font-size="10" fill="var(--muted)" ${M}>${i+1}時</text>`);
-   s+=`<text x="${x(2)}" y="${y(24.2)-8}" text-anchor="middle" font-size="11" fill="var(--rust)" ${M}>気温 24.2℃</text><text x="${x(2)}" y="${y(22.5)+16}" text-anchor="middle" font-size="11" fill="var(--proof)" ${M}>露点 22.5℃</text>`;
-   return sv(160,s+`<text x="500" y="20" text-anchor="end" font-size="12" fill="var(--ink)" ${F}>3時の差 1.7℃・湿度90%・風0.7m/s</text>`)}
+   s+=tx(kx+12,ky-12,'福山・草戸の蓋',{w:700,fs:14})+tx(dx-12,dy-12,'ドレミイン倉敷',{a:'end',w:700,fs:14})+tx(214,92,'41.6 km',{c:'var(--rust)',fs:20,w:600,m:1});
+   return sv(o.reach?200:140,s,'福山の蓋とドレミイン倉敷は41.6km離れている')},
+ speed:()=>{let s='';[['原チャリ（法定上限）',30,'var(--muted)'],['一般道の車',60,'var(--muted)'],['12分で移動するのに必要',208,'var(--rust)']].forEach(([l,v,c],i)=>{const y=18+i*50;s+=tx(0,y,l,{fs:13})+`<rect x="0" y="${y+8}" width="${v/208*260}" height="20" rx="2" fill="${c}"/>`+tx(v/208*260+8,y+23,v+' km/h',{fs:13,m:1,w:600})});return sv(160,s,'必要な速度は時速208km')},
+ ids:o=>{const a=o.a,b=o.b,x=t=>10+(t-a)/(b-a)*340;let s='';
+   o.lanes.forEach(([l,k,ts],i)=>{const y=34+i*52,pts=ts||POSTS[k];s+=tx(10,y-12,`${l}　${pts.filter(t=>t>=a&&t<=b).length}レス`,{fs:13})+`<line x1="10" y1="${y}" x2="350" y2="${y}" stroke="var(--line)"/>`;pts.forEach(t=>{if(t>=a&&t<=b)s+=`<circle cx="${x(t)}" cy="${y}" r="4.5" fill="${COL[k]}"/>`})});
+   const yy=34+o.lanes.length*52-18;for(let t=Math.ceil(a/60)*60;t<=b;t+=60)s+=tx(x(t),yy,hm(t),{a:'middle',fs:11,c:'var(--muted)',m:1});
+   if(o.note)s+=tx(350,yy+20,o.note,{a:'end',fs:13,c:'var(--rust)',w:700});
+   return sv(34+o.lanes.length*52+(o.note?6:-10),s,'IDごとの投稿時刻')},
+ gap:()=>{const x=t=>10+t/630*340;let s=`<line x1="10" y1="56" x2="350" y2="56" stroke="var(--line)"/><rect x="${x(90.3)}" y="49" width="${x(630)-x(90.3)}" height="14" fill="var(--rust)" opacity=".12"/>`;
+   POSTS.hina.forEach(t=>s+=`<circle cx="${x(t)}" cy="56" r="4" fill="var(--lamp)"/>`);
+   s+=`<line x1="${x(360)}" y1="32" x2="${x(360)}" y2="76" stroke="var(--rust)" stroke-width="2"/>`+tx(x(360),24,'約束の2:00',{a:'middle',c:'var(--rust)',w:700})+tx(x(360)+40,96,'このIDの書き込み 0件',{a:'middle',c:'var(--muted)'});
+   [0,240,480].forEach(t=>s+=tx(x(t)+(t?0:14),120,hm(t),{a:'middle',fs:11,c:'var(--muted)',m:1}));return sv(128,s,'HINAは約束の2時に戻らなかった')},
+ moon:()=>sv(110,`<circle cx="52" cy="55" r="44" fill="var(--on-sky)"/><circle cx="58" cy="55" r="44" fill="var(--sky-night)"/><circle cx="52" cy="55" r="44" fill="none" stroke="var(--line)"/>${tx(112,40,'月齢 約28（輝面 約2%）',{w:700,fs:14})}${tx(112,64,'9月14日が新月',{c:'var(--muted)'})}${tx(112,86,'夜のあいだ月は出ていない',{c:'var(--muted)'})}`,'月明かりのない夜'),
+ rain:()=>{let s='';['倉敷','福山'].forEach((c,i)=>{const y=34+i*48;s+=tx(0,y+5,c,{w:700})+`<line x1="44" y1="${y}" x2="350" y2="${y}" stroke="var(--proof)" stroke-width="4" stroke-linecap="round"/>`+tx(350,y-10,'0.0 mm',{a:'end',m:1,fs:12,c:'var(--proof)'})});
+   [1,3,5].forEach(h=>s+=tx(44+(h-1)/5*306,124,h+'時',{a:'middle',fs:11,c:'var(--muted)',m:1}));return sv(132,s,'1時から6時まで降水量0mm')},
+ lag:o=>{const L=[['区らしき 蓋①',2.08],['区らしき 蓋②',4.13],['区らしき 蓋③',1.37],['名無し gif',1.02],['566 柵',1.32],['名無し',0.97],['名無し',1.70],['名無し',3.92],['ツレ 車①',1.87],['ツレ 車②',0.47],['566 橋①',6.1],['566 橋②',5.08],['偽の黒帯',475,1],['テニスの人',603,1]];
+   const x=v=>112+(Math.log10(v)-Math.log10(.3))/(Math.log10(1000)-Math.log10(.3))*236,rh=18;let s='';
+   [1,10,60,600].forEach(t=>s+=`<line x1="${x(t)}" y1="2" x2="${x(t)}" y2="${L.length*rh+4}" stroke="var(--line)"/>`+tx(x(t),L.length*rh+20,t<60?t+'分':t/60+'時間',{a:'middle',fs:11,c:'var(--muted)',m:1}));
+   L.forEach((d,i)=>{const y=12+i*rh,hi=o.hi.includes(i),c=d[2]?'var(--rust)':'var(--proof)';s+=tx(104,y+4,d[0],{a:'end',fs:12,w:hi?700:400,c:hi?'var(--ink)':'var(--muted)'})+`<line x1="112" y1="${y}" x2="${x(d[1])}" y2="${y}" stroke="${c}" stroke-width="${hi?5:2}" opacity="${hi?1:.45}"/><circle cx="${x(d[1])}" cy="${y}" r="${hi?5.5:3}" fill="${c}"/>`});
+   return sv(L.length*rh+28,s,'画像のアップから投稿までの時間')},
+ clothes:()=>{const fig=(x,l1,l2,sh,pa,gl)=>`<circle cx="${x}" cy="26" r="13" fill="none" stroke="var(--muted)" stroke-width="2"/>${gl?`<line x1="${x-9}" y1="26" x2="${x+9}" y2="26" stroke="var(--ink)" stroke-width="2"/>`:''}<rect x="${x-24}" y="44" width="48" height="46" rx="6" fill="${sh}" stroke="var(--line)"/><rect x="${x-19}" y="92" width="17" height="50" fill="${pa}" stroke="var(--line)"/><rect x="${x+2}" y="92" width="17" height="50" fill="${pa}" stroke="var(--line)"/>`+tx(x,164,l1,{a:'middle',w:700})+tx(x,182,l2,{a:'middle',fs:12,c:'var(--muted)'});
+   return sv(192,fig(90,'ツレの報告','黒T・ジーパン','#1e1e1e','#3b5a85')+fig(270,'566本人','水色T・チノパン・メガネ','#8ccbe8','#c8b48a',1)+tx(180,96,'≠',{a:'middle',fs:28,c:'var(--rust)',m:1}),'服装が一致しない')},
+ cars:()=>{const car=(x,l)=>`<rect x="${x}" y="52" width="60" height="20" rx="7" fill="var(--muted)"/><rect x="${x+12}" y="41" width="36" height="13" rx="5" fill="var(--muted)"/><circle cx="${x+14}" cy="72" r="6" fill="var(--ink)"/><circle cx="${x+46}" cy="72" r="6" fill="var(--ink)"/>`+tx(x+30,98,l,{a:'middle',fs:12});
+   return sv(108,tx(0,18,'ツレの報告：1台',{c:'var(--rust)',w:700})+car(10,'1台')+tx(150,18,'566が見た：2台',{c:'var(--proof)',w:700})+car(150,'セルシオ')+car(250,'アコード'),'車の台数が一致しない')},
+ meet:()=>{const a=380,b=630,x=t=>10+(t-a)/(b-a)*340;let s=tx(10,16,'566が倉敷のドレミ周辺にいた時間',{c:'var(--proof)',fs:12,w:700});
+   [[410,460],[527,590]].forEach(([p,q])=>s+=`<rect x="${x(p)}" y="24" width="${x(q)-x(p)}" height="16" rx="2" fill="var(--proof)" opacity=".55"/>`);
+   s+=tx(10,66,'ツレが「ドレミ」の話をした時刻',{c:'var(--rust)',fs:12,w:700});[502.4,518.6,564.5,580.5].forEach(t=>s+=`<circle cx="${x(t)}" cy="80" r="6" fill="var(--rust)"/>`);
+   [420,480,540,600].forEach(t=>s+=tx(x(t),108,hm(t),{a:'middle',fs:11,c:'var(--muted)',m:1}));
+   s+=`<rect x="0" y="118" width="360" height="34" rx="4" fill="var(--night)"/>`+tx(180,141,'出会えた回数　0',{a:'middle',fs:16,w:700});return sv(156,s,'566と区らしき一行は一度も会っていない')},
+ sky:()=>{const a=480,b=660,x=t=>10+(t-a)/(b-a)*340;let s=`<defs><linearGradient id="skg" x1="0" x2="1"><stop offset="0" style="stop-color:var(--sky-night)"/><stop offset="${(531-a)/(b-a)}" style="stop-color:var(--sky-night)"/><stop offset="${(560-a)/(b-a)}" style="stop-color:var(--sky-dawn)"/><stop offset="${(586-a)/(b-a)}" style="stop-color:var(--sky-day)"/><stop offset="1" style="stop-color:var(--sky-day)"/></linearGradient></defs><rect x="10" y="30" width="340" height="44" rx="4" fill="url(#skg)"/>`;
+   [[531,'航海薄明','4:51'],[560,'市民薄明','5:20'],[586,'日の出','5:46']].forEach(([t,l,v])=>s+=`<line x1="${x(t)}" y1="30" x2="${x(t)}" y2="74" stroke="var(--on-sky)" opacity=".8"/>`+tx(x(t),94,l,{a:'middle',fs:12})+tx(x(t),110,v,{a:'middle',fs:12,m:1,c:'var(--muted)'}));
+   s+=`<circle cx="${x(578.4)}" cy="52" r="6" fill="var(--rust)" stroke="var(--on-sky)" stroke-width="2"/>`+tx(x(578.4),20,'「かなり明るい」5:38',{a:'middle',fs:12,c:'var(--rust)',w:700});
+   return sv(118,s,'夜明けの時刻')},
+ twosec:()=>{const x=s=>20+s/40*320;let g=`<line x1="20" y1="64" x2="340" y2="64" stroke="var(--line)"/>`;
+   [[7,'画像アップ','var(--muted)',34,'middle'],[33,'◆Li8t','var(--violet)',100,'end'],[35,'ツレ','var(--rust)',34,'start']].forEach(([t,l,c,y,an])=>g+=`<circle cx="${x(t)}" cy="64" r="7" fill="${c}"/>`+tx(x(t),y,l,{a:an,c,w:700}));
+   g+=tx(x(34),118,'この間 2秒',{a:'middle',fs:14,w:700,m:1});[0,20,40].forEach(t=>g+=tx(x(t),140,'6:21:'+String(t).padStart(2,'0'),{a:'middle',fs:11,c:'var(--muted)',m:1}));
+   return sv(148,g,'2秒差の投稿')},
+ reply:()=>{const a=431,b=448,x=t=>16+(t-a)/(b-a)*328;let s=`<line x1="10" y1="62" x2="350" y2="62" stroke="var(--line)"/>`;
+   s+=`<circle cx="${x(433.1)}" cy="62" r="7" fill="var(--rust)"/>`+tx(x(433.1)-6,36,'ツレ「応援2人と合流」',{fs:12,c:'var(--rust)',w:700});
+   s+=`<circle cx="${x(437.6)}" cy="62" r="7" fill="var(--violet)"/>`+tx(x(437.6),96,'黒帯「二人組と合流」',{a:'middle',fs:12,c:'var(--violet)',w:700});
+   s+=`<circle cx="${x(445.8)}" cy="62" r="7" fill="var(--rust)"/>`+tx(350,20,'ツレ「黒帯とは合流してない」',{a:'end',fs:12,c:'var(--rust)',w:700})+`<line x1="${x(445.8)}" y1="26" x2="${x(445.8)}" y2="54" stroke="var(--rust)"/>`;
+   [433,440,447].forEach(t=>s+=tx(x(t),128,hm(t),{a:'middle',fs:11,c:'var(--muted)',m:1}));return sv(136,s,'黒帯と区らしきの話のずれ')},
+ weather:()=>{const x=i=>24+i*62,y=v=>110-(v-21)/4.5*90,P=a=>a.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(' ');let s='';
+   s+=`<path d="${P(FK.t)} L${FK.d.map((v,i)=>`${x(5-i)},${y(FK.d[5-i])}`).join(' L')}Z" fill="var(--proof)" opacity=".18"/><path d="${P(FK.t)}" fill="none" stroke="var(--rust)" stroke-width="2.5"/><path d="${P(FK.d)}" fill="none" stroke="var(--proof)" stroke-width="2.5"/>`;
+   FK.t.forEach((v,i)=>s+=tx(x(i),134,(i+1)+'時',{a:'middle',fs:11,c:'var(--muted)',m:1}));
+   s+=tx(x(2),y(24.2)-10,'気温 24.2℃',{a:'middle',fs:12,c:'var(--rust)',w:700})+tx(x(2),y(22.5)+20,'露点 22.5℃',{a:'middle',fs:12,c:'var(--proof)',w:700});
+   return sv(142,s,'福山の気温と露点')}
 };
+
+// ---- UI ----
 const VT={ng:['食い違い','ng'],ok:['記録と合う','ok'],na:['判別できない','na'],info:['記録','na']};
-let cur=0;
-function show(i,scroll){
-  cur=(i+EVS.length)%EVS.length;const e=EVS[cur];
-  document.querySelectorAll('.ev').forEach(n=>n.classList.toggle('on',n.dataset.id===e.id));
-  document.querySelectorAll('.conn').forEach(n=>n.classList.toggle('on',n.dataset.for===e.id));
-  const lane=['grp','ture','s566f','photo','wx'].includes(e.row)?'実際の流れ':'スレでの報告';
-  const vt=VT[e.v];
-  document.getElementById('detail').innerHTML=`<div class="txt"><div class="top"><span class="tm">${hm(e.t)}</span><span class="chip" style="background:${e.v==='ng'?'var(--rust)':COL[e.row]}">${WHO[e.row]}</span><span class="tag ${vt[1]}">${vt[0]}</span><span class="who">${lane}</span></div><h3>${e.title}</h3>${e.q?`<blockquote>${esc(e.q)}</blockquote>`:''}<span class="who">${esc(e.who)}</span><span class="vlabel">検証</span><p>${e.vt}</p></div><div class="viz">${VZ[e.viz.k](e.viz)}</div><div class="nav"><button type="button" id="prev">← 前</button><span class="count">${cur+1} / ${EVS.length}</span><button type="button" id="next">次 →</button></div>`;
-  document.getElementById('prev').onclick=()=>show(cur-1,1);document.getElementById('next').onclick=()=>show(cur+1,1);
-  if(scroll){const box=document.getElementById('tlx');const tx=X(e.t)+LW-box.clientWidth/2;box.scrollTo({left:Math.max(0,tx),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const track=(n,p)=>{try{window.__track&&window.__track(n,p)}catch(e){}};
+const st={i:EVS.findIndex(e=>e.id==='aniki'),only:false};
+const list=()=>st.only?EVS.filter(e=>e.v==='ng'):EVS;
+const $=id=>document.getElementById(id);
+
+function drawMap(){
+  const svg=$('ntmap'),W=Math.max(300,svg.parentNode.clientWidth),H=W<520?104:122,L=8,R=8;
+  const x=t=>L+t/TMAX*(W-L-R);
+  const yR=H<110?26:32,yRep=yR+16,yS=yRep+12,hS=14,yFact=yS+hS+14;
+  let g=`<defs><linearGradient id="mskg" x1="0" x2="1"><stop offset="0" style="stop-color:var(--sky-night)"/><stop offset="${531/TMAX}" style="stop-color:var(--sky-night)"/><stop offset="${560/TMAX}" style="stop-color:var(--sky-dawn)"/><stop offset="${586/TMAX}" style="stop-color:var(--sky-day)"/><stop offset="1" style="stop-color:var(--sky-day)"/></linearGradient></defs>`;
+  // chapters
+  const cur=list()[st.i],cc=chapOf(cur.t);
+  CHAPS.forEach(c=>{if(c===cc)g+=`<rect x="${x(c[2])}" y="0" width="${x(c[3])-x(c[2])}" height="${H}" fill="var(--rust)" opacity=".07"/>`;if(c[2])g+=`<line x1="${x(c[2])}" y1="0" x2="${x(c[2])}" y2="${H}" stroke="var(--line)"/>`;});
+  // rate
+  let p=`M${x(10)},${yR}`;RATE.forEach(([t,v])=>p+=` L${x(t+5)},${yR-v/180*(yR-4)}`);p+=` L${x(625)},${yR}Z`;
+  g+=`<path d="${p}" fill="var(--rust)" opacity=".28"/>`;
+  // report ticks
+  for(const e of EVS) if(e.row!=='fact'){const dim=st.only&&e.v!=='ng';g+=`<circle cx="${x(e.t)}" cy="${yRep}" r="4" fill="${e.v==='ng'?'var(--rust)':COL[e.row]}" opacity="${dim?.2:1}"/>`;}
+  // sky
+  g+=`<rect x="${L}" y="${yS}" width="${W-L-R}" height="${hS}" rx="2" fill="url(#mskg)"/>`;
+  for(let t=0;t<=600;t+=W<520?120:60) g+=`<text x="${x(t)+3}" y="${yS+hS-3}" font-size="10" fill="var(--on-sky)" ${M}>${hm(t).replace(/^0/,'')}</text>`;
+  // fact bars + ticks
+  [[343,369],[382,600]].forEach(([a,b])=>g+=`<rect x="${x(a)}" y="${yFact-6}" width="${x(b)-x(a)}" height="4" fill="var(--rust)" opacity=".5"/>`);
+  [[410,460],[527,590]].forEach(([a,b])=>g+=`<rect x="${x(a)}" y="${yFact+2}" width="${x(b)-x(a)}" height="4" fill="var(--proof)" opacity=".7"/>`);
+  for(const e of EVS) if(e.row==='fact'){const dim=st.only&&e.v!=='ng';g+=`<circle cx="${x(e.t)}" cy="${yFact}" r="4" fill="${e.v==='ng'?'var(--rust)':'var(--proof)'}" stroke="var(--paper)" opacity="${dim?.2:1}"/>`;}
+  const nar=W<520;g+=`<text x="${x(nar?112:130)}" y="${yRep+4}" font-size="11" fill="var(--muted)" ${F}>${nar?'▲報告':'▲ スレでの報告'}</text><text x="${x(nar?112:130)}" y="${yFact+4}" font-size="11" fill="var(--muted)" ${F}>${nar?'▼実際':'▼ 実際の流れ'}</text>`;
+  // current
+  const cx=x(cur.t),cy=cur.row==='fact'?yFact:yRep;
+  g+=`<line x1="${cx}" y1="0" x2="${cx}" y2="${H}" stroke="var(--ink)" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/>`;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('height',H);svg.innerHTML=g;
+  svg.dataset.w=W;
 }
-const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-EVS.sort((a,b)=>a.t-b.t);
-document.getElementById('tlxi').innerHTML=buildLabels()+buildMain();
-document.getElementById('tlxi').addEventListener('click',ev=>{const g=ev.target.closest('.ev');if(g)show(EVS.findIndex(e=>e.id===g.dataset.id))});
-document.getElementById('tlxi').addEventListener('keydown',ev=>{const g=ev.target.closest('.ev');if(g&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();show(EVS.findIndex(e=>e.id===g.dataset.id))}});
-show(EVS.findIndex(e=>e.id==='aniki'),0);
-requestAnimationFrame(()=>{const box=document.getElementById('tlx');box.scrollLeft=Math.max(0,X(330)-20)});
+function drawChaps(){
+  const cur=list()[st.i],cc=chapOf(cur.t);
+  $('ntchaps').innerHTML=CHAPS.map(c=>{const has=list().some(e=>chapOf(e.t)===c);return `<button type="button" class="chap${c===cc?' on':''}" data-c="${c[0]}" ${has?'':'disabled'} aria-pressed="${c===cc}">${NUM[c[0]]} ${c[1]}<span>${hm(c[2]).replace(/^0/,'')}〜</span></button>`}).join('');
+  const on=$('ntchaps').querySelector('.on');if(on)on.scrollIntoView({block:'nearest',inline:'center',behavior:'auto'});
+}
+function drawCard(){
+  const L=list(),e=L[st.i],c=chapOf(e.t),v=VT[e.v];
+  const up=e.row==='fact'
+    ?`<div class="c-up meanwhile"><span class="c-lab">そのころスレでは</span><div class="post"><div class="post-name">${esc(e.m[0])}</div><p>${esc(e.m[1])}</p></div></div>`
+    :`<div class="c-up"><span class="c-lab">スレでの報告</span><div class="post" style="--who:${COL[e.row]}"><div class="post-name"><b>名前：${esc(e.name)}</b> <span>ID:${esc(e.uid)}</span></div><p>${esc(e.q)}</p></div></div>`;
+  $('ntcard').innerHTML=`<div class="c-head"><span class="c-time">${hm(e.t)}</span><span class="c-chap">${NUM[c[0]]} ${c[1]}</span><span class="chip" style="background:${e.row==='fact'?'var(--proof)':COL[e.row]}">${WHO[e.row]}</span></div>
+   <h3>${esc(e.title)}</h3>${up}
+   <div class="c-verdict ${v[1]}"><span>${v[0]}</span></div>
+   <div class="c-down"><span class="c-lab">記録が示すこと</span><p>${e.vt}</p><div class="viz">${VZ[e.viz.k](e.viz)}</div></div>`;
+  $('ntpos').textContent=`${st.i+1} / ${L.length}`;
+  $('ntprev').disabled=st.i===0;$('ntnext').disabled=st.i===L.length-1;
+}
+function render(){drawCard();drawMap();drawChaps();}
+function go(i,src){const L=list();if(i<0||i>=L.length)return;st.i=i;render();track('timeline_view',{point_id:L[i].id,via:src});
+  const bar=document.querySelector('.nt-bar'),c=$('ntcard'),bb=bar.getBoundingClientRect().bottom;if(c.getBoundingClientRect().top<bb-1){c.style.scrollMarginTop=(bar.offsetHeight+8)+'px';c.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}}
+function goId(id,src){const L=list();let i=L.findIndex(e=>e.id===id);if(i<0){st.only=false;$('ntonly').checked=false;i=EVS.findIndex(e=>e.id===id)}go(i,src)}
+
+$('ntprev').onclick=()=>go(st.i-1,'button');
+$('ntnext').onclick=()=>go(st.i+1,'button');
+$('ntchaps').addEventListener('click',ev=>{const b=ev.target.closest('.chap');if(!b)return;const c=CHAPS[+b.dataset.c];const i=list().findIndex(e=>chapOf(e.t)===c);if(i>=0)go(i,'chapter')});
+$('ntmap').addEventListener('click',ev=>{const svg=$('ntmap'),r=svg.getBoundingClientRect(),W=+svg.dataset.w,px=(ev.clientX-r.left)/r.width*W,t=(px-8)/(W-16)*TMAX;
+  const L=list();let best=0;L.forEach((e,i)=>{if(Math.abs(e.t-t)<Math.abs(L[best].t-t))best=i});go(best,'map')});
+$('ntonly').addEventListener('change',ev=>{const id=list()[st.i].id;st.only=ev.target.checked;const L=list();let i=L.findIndex(e=>e.id===id);if(i<0){const t=EVS.find(e=>e.id===id).t;i=L.findIndex(e=>e.t>=t);if(i<0)i=L.length-1}st.i=i;render();track('timeline_filter',{only_conflicts:st.only})});
+$('nt').addEventListener('keydown',ev=>{if(ev.target.matches('input'))return;if(ev.key==='ArrowRight'){go(st.i+1,'key');ev.preventDefault()}if(ev.key==='ArrowLeft'){go(st.i-1,'key');ev.preventDefault()}});
+(()=>{let sx=0,sy=0;const c=$('ntcard');c.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+ c.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(st.i+(dx<0?1:-1),'swipe')},{passive:true})})();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(drawMap,120)});
+render();
 
 
-// upload lag chart (minutes, log scale)
-const LAG=[["区らしき 蓋①",2.08],["区らしき 蓋②",4.13],["区らしき 蓋③",1.37],["名無し gif",1.02],["566 柵",1.32],["名無し gif",0.97],["名無し",1.70],["名無し",3.92],["ツレ 車①",1.87],["ツレ 車②",0.47],["566 橋①",6.1],["566 橋②",5.08],["偽黒帯 ◆tGLaO",475.0,1],["名無し（テニスの人）",603.0,1]];
-(function(){
-  const sv=document.getElementById('lagchart'),W=640,L=170,R=600,T=14,rowH=25;
-  const x=v=>L+(Math.log10(v)-Math.log10(0.3))/(Math.log10(1000)-Math.log10(0.3))*(R-L);
-  let g='';
-  for(const tk of [1,10,60,600]){const xx=x(tk);g+=`<line x1="${xx}" y1="${T-4}" x2="${xx}" y2="${T+LAG.length*rowH}" stroke="var(--line)"/><text x="${xx}" y="${T+LAG.length*rowH+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${tk<60?tk+'分':tk/60+'時間'}</text>`}
-  LAG.forEach((d,i)=>{const y=T+i*rowH+rowH/2,c=d[2]?'var(--rust)':'var(--proof)';
-    g+=`<text x="${L-10}" y="${y+4}" text-anchor="end" font-size="12" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">${d[0]}</text><line x1="${L}" y1="${y}" x2="${x(d[1])}" y2="${y}" stroke="${c}" stroke-width="3"/><circle cx="${x(d[1])}" cy="${y}" r="4.5" fill="${c}"/>`;
-    if(d[2]) g+=`<text x="${x(d[1])-8}" y="${y-7}" text-anchor="end" font-size="11" fill="var(--rust)" font-family="JetBrains Mono,monospace">${Math.floor(d[1]/60)}時間${Math.round(d[1]%60)}分</text>`;});
-  sv.innerHTML=g;
-})();
+// figures reuse the card visualizations
+document.getElementById('distviz').innerHTML=VZ.map({reach:1});
+document.getElementById('lagviz').innerHTML=VZ.lag({hi:[12,13]});
+document.querySelectorAll('.tablewrap table').forEach(t=>{const h=[...t.querySelectorAll('thead th')].map(x=>x.textContent);t.querySelectorAll('tbody tr').forEach(r=>[...r.children].forEach((td,i)=>td.dataset.label=h[i]||''))});
 
 // Google Trends monthly (JP). [蓋スレ, 倉敷蓋事件]; months not listed are 0
 const TR={"2012-01":[3,0],"2012-07":[2,0],"2013-04":[1,0],"2013-05":[1,0],"2014-02":[2,0],"2014-05":[1,0],"2016-03":[1,0],"2016-08":[1,0],"2017-08":[2,0],"2018-08":[1,0],"2019-08":[1,0],"2020-07":[2,0],"2021-02":[1,0],"2021-04":[1,0],"2021-05":[1,0],"2021-07":[2,6],"2021-08":[1,3],"2021-09":[1,2],"2021-10":[1,1],"2022-02":[0,1],"2022-03":[1,0],"2022-06":[0,1],"2022-09":[0,2],"2022-10":[1,0],"2023-01":[0,1],"2023-02":[0,1],"2023-03":[0,2],"2023-04":[0,1],"2023-06":[0,1],"2023-07":[100,6],"2023-08":[3,1],"2023-09":[1,0],"2023-11":[1,0],"2023-12":[1,0],"2024-01":[1,1],"2024-02":[0,2]};
-(function(){
-  const sv=document.getElementById('trendchart'),L=40,R=624,T=16,B=200;
+function drawTrend(){
+  const sv=document.getElementById('trendchart'),W=Math.max(300,sv.parentNode.clientWidth-28),nar=W<520,H=nar?190:230,L=nar?30:40,R=W-10,T=24,B=H-26;
   const months=[];for(let y=2004;y<=2026;y++)for(let m=1;m<=12;m++){if(y===2026&&m>10)break;months.push(`${y}-${String(m).padStart(2,'0')}`)}
   const n=months.length,x=i=>L+i/(n-1)*(R-L),y=v=>B-v/100*(B-T);
   let g='';
-  for(const v of [0,50,100])g+=`<line x1="${L}" y1="${y(v)}" x2="${R}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${v}</text>`;
-  for(const yr of [2004,2008,2012,2016,2020,2024]){const i=months.indexOf(`${yr}-01`);g+=`<text x="${x(i)}" y="${B+20}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${yr}</text>`}
-  [[1,'var(--lamp)'],[0,'var(--rust)']].forEach(([k,c])=>{
-    const pts=months.map((m,i)=>`${x(i).toFixed(1)},${y((TR[m]||[0,0])[k]).toFixed(1)}`).join(' ');
-    g+=`<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/>`;});
+  for(const v of [0,50,100])g+=`<line x1="${L}" y1="${y(v)}" x2="${R}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${v}</text>`;
+  for(const yr of (nar?[2004,2012,2020]:[2004,2008,2012,2016,2020,2024])){const i=months.indexOf(`${yr}-01`);g+=`<text x="${x(i)}" y="${B+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${yr}</text>`}
+  [[1,'var(--lamp)'],[0,'var(--rust)']].forEach(([k,c])=>{const pts=months.map((m,i)=>`${x(i).toFixed(1)},${y((TR[m]||[0,0])[k]).toFixed(1)}`).join(' ');g+=`<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/>`;});
   const pi=months.indexOf('2023-07');
-  g+=`<circle cx="${x(pi)}" cy="${y(100)}" r="4" fill="var(--rust)"/><text x="${x(pi)-8}" y="${y(100)+14}" text-anchor="end" font-size="12" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">2023年7月 テレビ放送</text>`;
-  sv.innerHTML=g;
-})();
+  g+=`<circle cx="${x(pi)}" cy="${y(100)}" r="4.5" fill="var(--rust)"/><text x="${x(pi)-10}" y="${y(100)+4}" text-anchor="end" font-size="12" fill="var(--ink)" font-family="Zen Kaku Gothic New,sans-serif">2023年7月 テレビ放送</text>`;
+  sv.setAttribute('viewBox',`0 0 ${W} ${H}`);sv.innerHTML=g;
+}
+drawTrend();addEventListener('resize',()=>{clearTimeout(window.__tr);window.__tr=setTimeout(drawTrend,150)});
 </script>
 
 <script>
-(function(){
-  var send=function(n,p){try{if(window.gtag)gtag('event',n,p)}catch(e){}};
-  var tl=document.getElementById('tlxi');
-  if(tl){
-    tl.addEventListener('click',function(e){var g=e.target.closest('.ev');if(g)send('timeline_tap',{point_id:g.dataset.id})});
-    tl.addEventListener('keydown',function(e){var g=e.target.closest('.ev');if(g&&(e.key==='Enter'||e.key===' '))send('timeline_tap',{point_id:g.dataset.id})});
-  }
-  var d=document.getElementById('detail');
-  if(d)d.addEventListener('click',function(e){var b=e.target.closest('button');if(b)send('timeline_nav',{direction:b.id})});
-  document.querySelectorAll('details').forEach(function(x){x.addEventListener('toggle',function(){if(x.open)send('faq_open',{question:x.querySelector('summary').textContent})})});
-  var box=document.getElementById('tlx'),sent=false,armed=false;
-  if(box){['pointerdown','wheel','touchstart','keydown'].forEach(function(t){box.addEventListener(t,function(){armed=true},{passive:true})});
-    box.addEventListener('scroll',function(){if(armed&&!sent){sent=true;send('timeline_scroll',{})}},{passive:true});}
-})();
+document.querySelectorAll('details').forEach(function(x){x.addEventListener('toggle',function(){if(x.open&&window.__track)__track('faq_open',{question:x.querySelector('summary').textContent})})});
 </script>
 </body>
 </html>
