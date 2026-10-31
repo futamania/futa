@@ -35,7 +35,7 @@
 <meta property="og:type" content="article">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"Article","@id":"https://futamania.github.io/futa/#article","headline":"蓋スレ（倉敷蓋事件）まとめ：蓋の場所・真相・全年表をデータで検証","inLanguage":"ja","datePublished":"2026-10-31","dateModified":"2026-10-31","author":{"@type":"Person","name":"futamania","url":"https://github.com/futamania"},"publisher":{"@type":"Organization","name":"データで見る蓋スレ"},"mainEntityOfPage":"https://futamania.github.io/futa/","image":["https://futamania.github.io/futa/og.jpg","https://futamania.github.io/futa/img/2004-0913-0332-futa1.jpg","https://futamania.github.io/futa/img/2007-0217-ao-dote.jpg"],"about":[{"@type":"Thing","name":"倉敷蓋事件"},{"@type":"Thing","name":"蓋スレ"},{"@type":"Thing","name":"本当に危ないところを見つけてしまった"}],"keywords":"蓋スレ, 倉敷蓋事件, 蓋スレ 場所, 区らしき市民, 福山市草戸町","description":"2004年の蓋スレを、元ログ約4,000レス・写真・地図・気象記録・ストリートビューで最初から最後までまとめた検証ページ。"},
+{"@type":"Article","@id":"https://futamania.github.io/futa/#article","headline":"蓋スレ（倉敷蓋事件）まとめ：蓋の場所・真相・全年表をデータで検証","inLanguage":"ja","datePublished":"2026-10-31","dateModified":"2026-10-31","author":{"@type":"Person","name":"futamania","url":"https://github.com/futamania"},"contributor":{"@type":"SoftwareApplication","name":"Claude","creator":{"@type":"Organization","name":"Anthropic"}},"publisher":{"@type":"Organization","name":"データで見る蓋スレ"},"mainEntityOfPage":"https://futamania.github.io/futa/","image":["https://futamania.github.io/futa/og.jpg","https://futamania.github.io/futa/img/2004-0913-0332-futa1.jpg","https://futamania.github.io/futa/img/2007-0217-ao-dote.jpg"],"about":[{"@type":"Thing","name":"倉敷蓋事件"},{"@type":"Thing","name":"蓋スレ"},{"@type":"Thing","name":"本当に危ないところを見つけてしまった"}],"keywords":"蓋スレ, 倉敷蓋事件, 蓋スレ 場所, 区らしき市民, 福山市草戸町","description":"2004年の蓋スレを、元ログ約4,000レス・写真・地図・気象記録・ストリートビューで最初から最後までまとめた検証ページ。"},
 {"@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"蓋スレ（倉敷蓋事件）とは？","acceptedAnswer":{"@type":"Answer","text":"2004年9月12日に2ちゃんねるのオカルト板で始まったスレ「本当に危ないところを見つけてしまった・・・」と、その続編群のこと。倉敷のラブホテル近くで友人が地面の扉の中に消えたという書き込みから、住人が現地へ向かい、実況が続いた。"}},
 {"@type":"Question","name":"蓋の場所はどこ？","acceptedAnswer":{"@type":"Answer","text":"区らしき市民が撮った蓋は、2007年2月16日に広島県福山市草戸町、芦田川の東の土手下で見つかった。スレの舞台だったドレミイン倉敷からは直線で約41.6km離れている。"}},
@@ -482,7 +482,9 @@ td,th,.mono,a{overflow-wrap:anywhere}
 .sh:hover{border-color:var(--ink)}
 .sh svg{width:16px;height:16px;flex:none}
 .sh-x i,.sh-line i,.sh-hb i{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-style:normal;font-size:.72rem;font-weight:800;color:#fff}
-.sh-x i{background:#000;box-shadow:0 0 0 1px var(--line)}.sh-line i{background:#06C755}.sh-hb i{background:#00A4DE}
+.sh-x i{background:#000;box-shadow:0 0 0 1px var(--line)}.sh-th i,.sh-bs i,.sh-fb i{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-style:normal;font-size:.72rem;font-weight:800;color:#fff}.sh-th i{background:#101010;box-shadow:0 0 0 1px var(--line)}.sh-bs i{background:#1185fe;font-size:.66rem}.sh-fb i{background:#1877f2}
+.sec-share{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}.sec-share span{font-size:.84rem;color:var(--muted)}
+.fab-m{max-height:70vh;overflow:auto}.sh-line i{background:#06C755}.sh-hb i{background:#00A4DE}
 .sh.done{border-color:var(--proof);color:var(--proof)}
 .share-end{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;margin-top:8px}
 .share-end p{font-weight:700}
@@ -495,6 +497,10 @@ td,th,.mono,a{overflow-wrap:anywhere}
 .fab.open .fab-m{display:grid}
 .fab-m .sh{justify-content:flex-start}
 @media (prefers-reduced-motion:reduce){.fab{transition:none}}
+.about{display:grid;gap:12px;border-top:1px solid var(--line);padding-top:28px}
+.about-b{display:grid;gap:12px;max-width:40em}
+.about-b p{line-height:1.95}
+.about-sig{font-size:.86rem;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -513,7 +519,7 @@ td,th,.mono,a{overflow-wrap:anywhere}
 </header>
 
 <nav class="toc" aria-label="目次">
-  <a href="#story">全体の流れ</a><a href="#chrono">全年表</a><a href="#people">登場人物</a><a href="#words">用語集</a><a href="#map">地図</a><a href="#ai">AI vs 人間</a><a href="#pts">データでわかったこと</a><a href="#tlh">あの一晩</a><a href="#mbh">メンバー別</a><a href="#trend">今も検索される？</a><a href="#lk">リンク</a>
+  <a href="#story">全体の流れ</a><a href="#chrono">全年表</a><a href="#people">登場人物</a><a href="#words">用語集</a><a href="#map">地図</a><a href="#ai">AI vs 人間</a><a href="#pts">データでわかったこと</a><a href="#tlh">あの一晩</a><a href="#mbh">メンバー別</a><a href="#trend">今も検索される？</a><a href="#lk">リンク</a><a href="#about">このページについて</a>
 </nav>
 
 <section id="story" aria-labelledby="storyh">
@@ -645,6 +651,7 @@ td,th,.mono,a{overflow-wrap:anywhere}
       <div><dt>蓋の正体</dt><dd><span class="badge na">有力な説</span>下水や排水の「沈殿桝」と考えられている。2007年の現地確認では、中に水が溜まっていた。</dd></div>
     </dl>
   </div>
+  <div class="sec-share"><span>この章をシェア</span><a class="sh sh-x" data-sh="x" data-hash="story" data-t="蓋スレを最初から最後まで：作り話に紛れ込んだ本物の蓋の写真" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" data-hash="story" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a></div>
 </section>
 
 <section id="chrono" aria-labelledby="chronoh">
@@ -688,6 +695,7 @@ td,th,.mono,a{overflow-wrap:anywhere}
     <ol class="mp-key" id="mpkey"></ol>
     <p class="cap" id="mpcap"></p>
   </div>
+  <div class="sec-share"><span>この章をシェア</span><a class="sh sh-x" data-sh="x" data-hash="map" data-t="蓋スレの場所はどこ？ 倉敷と福山、探した場所と本当の場所を地図で" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" data-hash="map" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a></div>
 </section>
 
 
@@ -761,6 +769,7 @@ td,th,.mono,a{overflow-wrap:anywhere}
       <li><b>一番の遠回りは、道具ではなく思い込みだった。</b>倉敷説、笠岡説、川の西側。データで前提を疑えば、最初の一歩で倉敷を外せました。</li>
     </ol>
   </div>
+  <div class="sec-share"><span>この章をシェア</span><a class="sh sh-x" data-sh="x" data-hash="ai" data-t="2026年のAIは、写真から本物の蓋に辿り着けるか【AI vs 人間】" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" data-hash="ai" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a></div>
 </section>
 
 
@@ -888,8 +897,18 @@ td,th,.mono,a{overflow-wrap:anywhere}
   </div>
 </section>
 
-<div class="share-end"><p>おもしろかったら、蓋スレを知らない人にも。</p><div class="share"><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div></div>
-<div class="fab" id="fab"><div class="fab-m" id="fabm" role="menu"><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div><button type="button" class="fab-b" id="fabb" aria-label="このページを共有" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button></div>
+<section id="about" aria-labelledby="abouth" class="about">
+  <h2 id="abouth" data-bx>この<wbr>ページに<wbr>ついて</h2>
+  <div class="about-b">
+    <p>蓋スレの「その後」を、ずっと追いかけたいと思っていました。でも、スレが立ってからもう20年以上が経ちます。当時は分からなかったことも、今の道具と今の視点なら確かめられるかもしれない。そう思って、このページを作りました。</p>
+    <p>当時の2ちゃんねるの文化が好きでした。名無しが夜中に集まり、誰かが本当に現地へ向かい、残った人はそれを実況で見守る。釣りかもしれないと分かっていても、みんなで乗っかって楽しむ。あの空気を、記録として残しておきたいと思っています。</p>
+    <p>文章と検証は、AIのClaude（Anthropic）と一緒に書きました。元ログ約4,000レスの読み込み、気象や地図のデータの計算、ストリートビューでの確認はClaudeが担当し、何を調べてどう見せるかは私が決めています。</p>
+    <p>間違いや新しい情報があれば、Xで <b>#蓋スレ</b> を付けて教えてください。当時スレにいた人の話も、ぜひ聞きたいです。</p>
+    <p class="about-sig">企画・構成：futamania ／ 文・検証：futamania と Claude（Anthropic）</p>
+  </div>
+</section>
+<div class="share-end"><p>おもしろかったら、蓋スレを知らない人にも。</p><div class="share"><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><a class="sh sh-th" data-sh="threads" href="#" target="_blank" rel="noopener"><i>@</i>Threads</a><a class="sh sh-bs" data-sh="bsky" href="#" target="_blank" rel="noopener"><i>🦋</i>Bluesky</a><a class="sh sh-fb" data-sh="fb" href="#" target="_blank" rel="noopener"><i>f</i>Facebook</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div></div>
+<div class="fab" id="fab"><div class="fab-m" id="fabm" role="menu"><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><a class="sh sh-th" data-sh="threads" href="#" target="_blank" rel="noopener"><i>@</i>Threads</a><a class="sh sh-bs" data-sh="bsky" href="#" target="_blank" rel="noopener"><i>🦋</i>Bluesky</a><a class="sh sh-fb" data-sh="fb" href="#" target="_blank" rel="noopener"><i>f</i>Facebook</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div><button type="button" class="fab-b" id="fabb" aria-label="このページを共有" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button></div>
 <footer>データで見る蓋スレ ／ 2026年10月31日作成。数値の出典は本文とリンク欄のとおり。<br>このサイトはアクセス解析にGoogleアナリティクスを使用しています。データは匿名で収集され、個人を特定するものではありません。<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用について</a></footer>
 </div>
 
@@ -1398,10 +1417,11 @@ document.querySelectorAll('[data-av]').forEach(el=>{el.innerHTML=el.dataset.av.s
 (function(){
   const U='https://futamania.github.io/futa/',T='蓋スレ（倉敷蓋事件）まとめ｜蓋の場所・真相・全年表をデータで検証',e=encodeURIComponent;
   const href={x:`https://x.com/intent/post?text=${e(T)}&url=${e(U)}&hashtags=${e('蓋スレ')}`,line:`https://social-plugins.line.me/lineit/share?url=${e(U)}`,hatena:`https://b.hatena.ne.jp/add?mode=confirm&url=${e(U)}&title=${e(T)}`};
-  document.querySelectorAll('[data-sh]').forEach(a=>{const k=a.dataset.sh;if(href[k])a.href=href[k]});
+  const mk=(k,u,t)=>({x:`https://x.com/intent/post?text=${e(t)}&url=${e(u)}&hashtags=${e('蓋スレ')}`,line:`https://social-plugins.line.me/lineit/share?url=${e(u)}`,hatena:`https://b.hatena.ne.jp/add?mode=confirm&url=${e(u)}&title=${e(t)}`,threads:`https://www.threads.net/intent/post?text=${e(t+' '+u)}`,bsky:`https://bsky.app/intent/compose?text=${e(t+' #蓋スレ '+u)}`,fb:`https://www.facebook.com/sharer/sharer.php?u=${e(u)}`})[k];
+  document.querySelectorAll('[data-sh]').forEach(a=>{const k=a.dataset.sh;if(k==='copy')return;const h=a.dataset.hash;a.href=mk(k,h?U+'#'+h:U,a.dataset.t||T)});
   const copy=async b=>{let ok=false;try{await navigator.clipboard.writeText(U);ok=true}catch(err){const t=document.createElement('textarea');t.value=U;document.body.appendChild(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}
     const sp=b.querySelector('span');if(sp){const o=sp.textContent;sp.textContent=ok?'コピーしました':'コピーできませんでした';b.classList.toggle('done',ok);setTimeout(()=>{sp.textContent=o;b.classList.remove('done')},1800)}};
-  document.addEventListener('click',ev=>{const a=ev.target.closest('[data-sh]');if(!a)return;const k=a.dataset.sh,where=a.closest('.fab')?'float':a.closest('header')?'top':'end';track('share',{method:k,where});if(k==='copy'){ev.preventDefault();copy(a)}});
+  document.addEventListener('click',ev=>{const a=ev.target.closest('[data-sh]');if(!a)return;const k=a.dataset.sh,where=a.dataset.hash?'sec_'+a.dataset.hash:a.closest('.fab')?'float':a.closest('header')?'top':'end';track('share',{method:k,where});if(k==='copy'){ev.preventDefault();copy(a)}});
   const fab=document.getElementById('fab'),fb=document.getElementById('fabb');
   const setOpen=o=>{fab.classList.toggle('open',o);fb.setAttribute('aria-expanded',o)};
   fb.addEventListener('click',async()=>{if(navigator.share&&matchMedia('(pointer:coarse)').matches){try{await navigator.share({title:T,url:U});track('share',{method:'native',where:'float'})}catch(_){}return}setOpen(!fab.classList.contains('open'))});
