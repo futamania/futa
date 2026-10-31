@@ -408,7 +408,8 @@ td,th,.mono,a{overflow-wrap:anywhere}
 .sg-pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:4px 0}
 .sg-pics.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .sg-pics.four{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sg-pics figure{margin:0;display:grid;gap:4px;align-content:start}
+.sg-pics figure{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:4px;align-content:start;min-width:0}
+.sg-pics figcaption,.mp-key p,.g3 p{word-break:normal;overflow-wrap:anywhere}
 .sg-pics img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid var(--line);background:var(--night);display:block}
 .sg-pics figcaption{font-size:.8rem;line-height:1.55;color:var(--muted)}
 .sg-pics figcaption .mono{display:block;color:var(--ink);font-size:.74rem}
