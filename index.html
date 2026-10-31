@@ -553,8 +553,9 @@ const TR={"2012-01":[3,0],"2012-07":[2,0],"2013-04":[1,0],"2013-05":[1,0],"2014-
   var d=document.getElementById('detail');
   if(d)d.addEventListener('click',function(e){var b=e.target.closest('button');if(b)send('timeline_nav',{direction:b.id})});
   document.querySelectorAll('details').forEach(function(x){x.addEventListener('toggle',function(){if(x.open)send('faq_open',{question:x.querySelector('summary').textContent})})});
-  var box=document.getElementById('tlx'),sent=false;
-  if(box)box.addEventListener('scroll',function(){if(!sent){sent=true;send('timeline_scroll',{})}},{passive:true});
+  var box=document.getElementById('tlx'),sent=false,armed=false;
+  if(box){['pointerdown','wheel','touchstart','keydown'].forEach(function(t){box.addEventListener(t,function(){armed=true},{passive:true})});
+    box.addEventListener('scroll',function(){if(armed&&!sent){sent=true;send('timeline_scroll',{})}},{passive:true});}
 })();
 </script>
 </body>
