@@ -1164,7 +1164,7 @@ document.querySelectorAll('[data-av]').forEach(el=>{el.innerHTML=el.dataset.av.s
     draw:()=>{const d=MAPD.kura,p=pr(d),Q=(la,lo)=>p(la,lo);
       const pts={1:[34.58138,133.78969],2:[34.58296,133.78904],3:[34.58482,133.78579],4:[34.58679,133.78721],5:[34.5830,133.7926],6:[34.58724,133.79418],7:[34.58586,133.79049]};
       let g=base(d);
-      g+=lab(Q(34.5868,133.7952),'国道2号',0,0,{a:'middle',c:La,fs:11})+lab(Q(34.5792,133.7955),'丘（雑木林）',0,0,{a:'middle',w:400,c:P,fs:11});
+      g+=lab(Q(34.5896,133.7912),'国道2号',0,0,{a:'middle',c:La,fs:11})+lab(Q(34.5792,133.7955),'丘（雑木林）',0,0,{a:'middle',w:400,c:P,fs:11});
       const cs={1:R,2:R,3:La,4:Mu,5:P,6:P,7:Mu};
       Object.entries(pts).forEach(([n,ll])=>g+=mk(n,Q(...ll),cs[n]));
       g+=lab(Q(...pts[1]),'ドレミ',13,4,{c:R});
@@ -1210,8 +1210,9 @@ document.querySelectorAll('[data-av]').forEach(el=>{el.innerHTML=el.dataset.av.s
     key:[['1','双子の蓋','2007.02.16','青「双子の蓋があったから下道を走り気づきました」。画像中継は2007年1月に写真から「手前の蓋は2枚重ね」と指摘していた。',R],['2','道路標識のポール','2005.10.13','566が「標識があるから公道沿い」と推理。発見後「あのポールはマジで標識だったのか」。',P],['3','白い小屋','2005.10.13','566の推理では「屋根付きで窓のない白い建物」。青の写真にも写っている。',P],['4','ブロック塀','2007.01.27','「1段20cm×11段で220cm」と写真から計算された。塀の向こうは会社だった（青）。',P],['5','芦田川の土手','2007.02.17','写真の消火器の脇のゴルフボールは「土手でおっさんがアプの練習してるから」（青）。',Mu]],
     draw:()=>{const W=360,H=250;let g=`<rect width="${W}" height="${H}" fill="var(--paper)"/>`;
       const gy=190;
-      g+=`<path d="M0 ${gy+20} L70 ${gy+20} L70 ${gy+30} L0 ${gy+30}Z" fill="var(--water)"/>`+tx(8,gy+48,'芦田川',{fs:11.5,w:700,c:'var(--water-ink)'});
+      
       g+=`<path d="M0 ${gy+20} L64 ${gy+20} L110 ${gy-46} L150 ${gy-46} L196 ${gy} L${W} ${gy} L${W} ${H} L0 ${H}Z" fill="var(--wood)"/>`;
+      g+=`<path d="M0 ${gy+14} L58 ${gy+14} L64 ${gy+20} L0 ${gy+20}Z" fill="var(--water)"/>`+tx(8,gy+40,'芦田川',{fs:11.5,w:700,c:'var(--water-ink)'});
       g+=`<line x1="196" y1="${gy}" x2="${W}" y2="${gy}" stroke="var(--road)" stroke-width="3"/>`+tx(250,gy+18,'土手下の道',{a:'middle',fs:11.5});
       g+=tx(130,gy-56,'土手',{a:'middle',fs:11.5,w:700})+mk('5',[130,gy-30],Mu,{r:9});
       g+=`<rect x="204" y="${gy-6}" width="22" height="6" fill="var(--rust)"/><rect x="230" y="${gy-6}" width="22" height="6" fill="var(--rust)"/>`+mk('1',[228,gy-26],R);
@@ -1220,7 +1221,7 @@ document.querySelectorAll('[data-av]').forEach(el=>{el.innerHTML=el.dataset.av.s
       g+=`<rect x="324" y="${gy-66}" width="14" height="66" fill="var(--line)" stroke="var(--muted)"/>`;for(let i=1;i<11;i++)g+=`<line x1="324" y1="${gy-66+i*6}" x2="338" y2="${gy-66+i*6}" stroke="var(--muted)" stroke-width=".5"/>`;
       g+=mk('4',[331,gy-80],P,{r:9})+tx(352,gy-30,'会社',{a:'end',fs:10.5,c:Mu});
       g+=tx(10,22,'西',{fs:11,c:Mu})+tx(W-10,22,'東',{a:'end',fs:11,c:Mu})+tx(W/2,22,'東西に切った断面の模式図',{a:'middle',fs:11,c:Mu});
-      g+=tx(206,gy-112,'南へ走ると見える',{fs:11,c:P,w:700})+tx(206,gy-96,'北へ走ると見えない',{fs:11,c:Mu});
+      g+=tx(196,gy-146,'南へ走ると見える',{fs:11,c:P,w:700})+tx(196,gy-130,'北へ走ると見えない',{fs:11,c:Mu});
       return sv(H,g,'蓋の現場の模式図')}}
   };
   const order=['all','kura','fuku','kusa','site'];let cur='all';
