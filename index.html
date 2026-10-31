@@ -952,10 +952,10 @@ document.getElementById('wordsl').innerHTML=WORDS.map(w=>`<div><dt>${esc(w[0])}<
   let g=`<line x1="${x(K[2])}" y1="${y(K[1])}" x2="${x(D[2])}" y2="${y(D[1])}" stroke="var(--muted)" stroke-dasharray="5 6"/>`;
   const mx=(x(K[2])+x(D[2]))/2,my=(y(K[1])+y(D[1]))/2;
   g+=tx(mx+4,my-12,'41.6 km',{a:'middle',fs:15,w:700,m:1,c:'var(--rust)'});
-  const lab={'ドレミイン倉敷':[-10,-10,'end',1],'帯江小学校':[-10,-26,'end',0],'笠岡市':[0,22,'middle',0],'草戸町（区らしきの蓋）':[2,-14,'start',1],'明王台':[-2,20,'start',0]};
+  const lab={'ドレミイン倉敷':[-10,-10,'end',1],'帯江小学校':[-10,-26,'end',0],'笠岡市':[0,22,'middle',0],'草戸町（区らしきの蓋）':[-8,-34,'start',1],'明王台':[-2,20,'start',0]};
   PLACES.forEach(([n,la,lo,c])=>{const L=lab[n];if(!L)return;const px=x(lo),py=y(la);g+=`<circle cx="${px}" cy="${py}" r="${c==='rust'||n==='ドレミイン倉敷'?6:4.5}" fill="var(--${c})"/>`+tx(px+L[0],py+L[1],n==='草戸町（区らしきの蓋）'?'区らしきの蓋（草戸町）':n,{a:L[2],fs:L[3]?13.5:12,w:L[3]?700:400})});
   const kmPx=sx/111;g+=`<line x1="15" y1="${H-12}" x2="${15+10*kmPx}" y2="${H-12}" stroke="var(--ink)" stroke-width="2"/>`+tx(15+10*kmPx+6,H-8,'10km',{fs:11,m:1});
-  g+=tx(W-10,18,'倉敷（岡山県）',{a:'end',fs:12,c:'var(--proof)',w:700})+tx(12,18,'福山（広島県）',{fs:12,c:'var(--rust)',w:700});
+  g+=`<line x1="${x(K[2])}" y1="${y(K[1])-7}" x2="${x(K[2])}" y2="${y(K[1])-28}" stroke="var(--rust)"/>`+tx(W-10,y(D[1])+26,'倉敷（岡山県）',{a:'end',fs:12,c:'var(--proof)',w:700})+tx(12,18,'福山（広島県）',{fs:12,c:'var(--rust)',w:700});
   document.getElementById('placeviz').innerHTML=sv(H,g,'倉敷と福山の位置関係');
 })();
 
