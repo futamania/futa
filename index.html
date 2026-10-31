@@ -254,6 +254,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .uptab tr.bait td{background:var(--rust-soft)}
 .uptab .mini{font-family:var(--f-body);font-size:.74rem}
 @media (max-width:600px){
+  .uptab,.uptab tbody{display:block;width:100%}
   .uptab thead{display:none}
   .uptab tr{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;padding:10px 12px;border-bottom:1px solid var(--line)}
   .uptab td{border:0;padding:0}
@@ -672,7 +673,7 @@ const VZ={
    return sv(118,s,'夜明けの時刻')},
  twosec:()=>{const x=s=>20+s/40*320;let g=`<line x1="20" y1="64" x2="340" y2="64" stroke="var(--line)"/>`;
    [[7,'画像アップ','var(--muted)',34,'middle'],[33,'◆Li8t','var(--violet)',100,'end'],[35,'ツレ','var(--rust)',34,'start']].forEach(([t,l,c,y,an])=>g+=`<circle cx="${x(t)}" cy="64" r="7" fill="${c}"/>`+tx(x(t),y,l,{a:an,c,w:700}));
-   g+=tx(x(34),118,'この間 2秒',{a:'middle',fs:14,w:700,m:1});[0,20,40].forEach(t=>g+=tx(x(t),140,'6:21:'+String(t).padStart(2,'0'),{a:'middle',fs:11,c:'var(--muted)',m:1}));
+   g+=tx(x(34),118,'この間 2秒',{a:'middle',fs:14,w:700,m:1});[[0,'start'],[20,'middle'],[40,'end']].forEach(([t,a])=>g+=tx(x(t),140,'6:21:'+String(t).padStart(2,'0'),{a,fs:11,c:'var(--muted)',m:1}));
    return sv(148,g,'2秒差の投稿')},
  reply:()=>{const a=431,b=448,x=t=>16+(t-a)/(b-a)*328;let s=`<line x1="10" y1="62" x2="350" y2="62" stroke="var(--line)"/>`;
    s+=`<circle cx="${x(433.1)}" cy="62" r="7" fill="var(--rust)"/>`+tx(x(433.1)-6,36,'ツレ「応援2人と合流」',{fs:12,c:'var(--rust)',w:700});
@@ -713,7 +714,7 @@ function drawMap(){
   for(const e of EVS) if(e.row!=='fact'){const dim=st.only&&e.v!=='ng';g+=`<circle cx="${x(e.t)}" cy="${yRep}" r="4" fill="${e.v==='ng'?'var(--rust)':COL[e.row]}" opacity="${dim?.2:1}"/>`;}
   // sky
   g+=`<rect x="${L}" y="${yS}" width="${W-L-R}" height="${hS}" rx="2" fill="url(#mskg)"/>`;
-  for(let t=0;t<=600;t+=W<520?120:60) g+=`<text x="${x(t)+3}" y="${yS+hS-3}" font-size="10" fill="var(--on-sky)" ${M}>${hm(t).replace(/^0/,'')}</text>`;
+  for(let t=0;t<=600;t+=W<520?120:60) if(x(t)+30<W) g+=`<text x="${x(t)+3}" y="${yS+hS-3}" font-size="10" fill="var(--on-sky)" ${M}>${hm(t).replace(/^0/,'')}</text>`;
   // fact bars + ticks
   [[343,369],[382,600]].forEach(([a,b])=>g+=`<rect x="${x(a)}" y="${yFact-6}" width="${x(b)-x(a)}" height="4" fill="var(--rust)" opacity=".5"/>`);
   [[410,460],[527,590]].forEach(([a,b])=>g+=`<rect x="${x(a)}" y="${yFact+2}" width="${x(b)-x(a)}" height="4" fill="var(--proof)" opacity=".7"/>`);
