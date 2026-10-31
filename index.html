@@ -219,6 +219,56 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   .nt-card .c-verdict{grid-column:1;grid-row:4}
   .nt-card .c-down{grid-column:2;grid-row:3/span 3}
 }
+/* members */
+.mb-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.mb-tabs::-webkit-scrollbar{display:none}
+.mbtab{flex:none;font:inherit;font-size:.88rem;min-height:42px;padding:6px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer}
+.mbtab i{width:10px;height:10px;border-radius:50%;display:block}
+.mbtab span{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.mbtab.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.mb{display:grid;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px}
+.mb-head{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:space-between;align-items:flex-start;border-left:4px solid var(--mc);padding-left:12px}
+.mb-head h3{font-size:1.3rem}
+.mb-head p{color:var(--muted);font-size:.92rem}
+.mb-verdict{font-weight:700;font-size:.86rem;padding:4px 12px;border-radius:999px;border:1.5px solid currentColor}
+.mb-verdict.ng{color:var(--rust);background:var(--rust-soft)}
+.mb-verdict.ok{color:var(--proof);background:var(--proof-soft)}
+.mb-verdict.na{color:var(--muted)}
+.mb-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.mb-stats div{background:var(--night);padding:10px 12px;display:grid;gap:2px}
+.mb-stats b{font-size:1.25rem;font-weight:600}
+.mb-stats span{font-size:.76rem;color:var(--muted)}
+.mb-strip{display:grid;gap:8px}
+#mbstrip{display:block;width:100%}
+.mb-legend{display:flex;flex-wrap:wrap;gap:6px}
+.conf{font-size:.72rem;padding:1px 8px;border-radius:4px;white-space:nowrap;border:1px solid var(--muted);color:var(--ink)}
+.conf.rec{background:var(--proof-soft);border-color:var(--proof)}
+.conf.likely{background:transparent;border-color:var(--ink)}
+.conf.claim{border-style:dashed}
+.conf.ng{background:var(--rust-soft);border-color:var(--rust);color:var(--rust)}
+.mb-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px 28px;align-items:start}
+.mb h4{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;color:var(--muted);font-weight:400;margin:0 0 8px}
+.mb-finds ol{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:f}
+.mb-finds li{display:grid;grid-template-columns:1.8em 1fr;gap:2px 8px}
+.mb-finds li::before{counter-increment:f;content:counter(f);grid-row:span 2;font-family:var(--f-display);color:var(--rust);font-size:1.1rem;line-height:1.5}
+.mb-finds b{font-size:.98rem}
+.mb-finds p{font-size:.9rem;color:var(--ink)}
+.mb-list ol{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:2px solid var(--line);margin-left:4px}
+.mb-list li{display:grid;grid-template-columns:3.4em 1fr;gap:10px;padding:7px 0 7px 12px;position:relative;font-size:.9rem;line-height:1.6}
+.mb-t{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);padding-top:2px}
+.mb-post::before{content:"";position:absolute;left:-6px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--muted)}
+.mb-id{display:inline-block;font-family:var(--f-mono);font-size:.7rem;color:var(--paper);background:var(--muted);padding:0 6px;border-radius:3px;margin-bottom:2px}
+.mb-seg{grid-template-columns:1fr!important;gap:4px!important;margin:6px 0 6px 10px;padding:8px 12px!important;border-radius:6px;border:1.5px solid var(--mc);background:transparent}
+.mb-seg.rec{background:var(--proof-soft);border-color:var(--proof)}
+.mb-seg.claim{border-style:dashed}
+.mb-seg.ng{background:var(--rust-soft);border-color:var(--rust)}
+.mb-seg .mb-t{padding:0}
+.mb-seg .mb-l{font-weight:700}
+.mb-seg .conf{justify-self:start}
+.mb-more{margin-top:10px;font:inherit;font-size:.9rem;min-height:44px;width:100%;border:1px solid var(--line);background:var(--night);color:var(--ink);border-radius:6px;cursor:pointer}
+.mb-more:hover{border-color:var(--rust)}
+@media (max-width:760px){.mb-cols{grid-template-columns:1fr}}
+@media (max-width:600px){.mb{padding:14px}.mb-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:no-preference){.links a{transition:border-color .15s}}
 </style>
 </head>
@@ -243,6 +293,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     <li><p><b>「ドレミ付近」の実況は、倉敷にいた566の報告とすべて食い違う。</b>服装、通った車の台数、待機していたはずの「B君」。566は誰にも会っていない。</p></li>
     <li><p><b>写真そのものは「その夜」に撮られたと見て矛盾しない。</b>フラッシュの夜景で、手すりに水滴。福山の当夜は湿度90%・気温と露点の差1.7℃・ほぼ無風で、その週でいちばん露が付きやすい夜だった。雨は降っていない。</p></li>
     <li><p><b>実況を打っていたのは区らしき本人ではない。</b>区らしき（ID:5lxX3mlU）は2:08に出発して以降書き込んでいない。以後の57レスは、同じトリップ◆34uqを使う「ツレ」（ID:9mnKs2yQ）が電話で聞いて代筆したもの。</p></li>
+    <li><p><b>倉敷にいたと確かめられるのは566だけ。</b>566は出かけるたびに回線をつなぎ直してIDが変わり、フシアナ（プロバイダ名の表示）では岡山の接続元が出た。一方ツレはフシアナを求められてもかわし、黒帯は現場にいた痕跡がひとつもない。</p></li>
     <li><p><b>釣り画像はファイル名でわかる。</b>アップローダーのファイル名にはアップ時刻が入る。生実況の画像はアップから1〜6分で貼られたが、偽物の2枚はスレが立つ前にアップ済みだった。</p></li>
   </ol>
 </section>
@@ -265,6 +316,16 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     </div>
     <article class="nt-card" id="ntcard" aria-live="polite"></article>
   </div>
+</section>
+
+<section aria-labelledby="mbh">
+  <div style="display:grid;gap:10px">
+    <p class="eyebrow">Members ／ 6人の一晩</p>
+    <h2 id="mbh">メンバー別：書いたこと、していたこと</h2>
+    <p class="prose">主要な6人について、その夜の全投稿と、記録から推測できる実際の行動を並べました。行動には確かさを付けています。「記録で確認」は時刻や他人の証言で裏付けがあるもの、「有力な推測」は記録と矛盾せず最も筋が通るもの、「本人の申告だけ」は裏付けがないもの、「記録と食い違う」は他の記録と合わないものです。</p>
+  </div>
+  <div class="mb-tabs" id="mbtabs" role="tablist" aria-label="メンバー"></div>
+  <div class="mb" id="mb" aria-live="polite"></div>
 </section>
 
 <section aria-labelledby="dist">
@@ -351,7 +412,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <section aria-labelledby="mt">
   <h2 id="mt">方法と限界</h2>
   <div class="prose" style="display:grid;gap:12px">
-    <p>元ログは2ちゃんねる過去ログ（kako.5ch.io）のpart1〜part3（4スレ、4,004レス、9/12 20:10〜9/13 06:30）を機械的に取り込み、ID・トリップ・メール欄・時刻で突き合わせました。気象は気象庁の倉敷アメダスと福山特別地域気象観測所の毎時値、日の出と薄明は太陽の位置の計算式、距離はOpenStreetMapの座標から求めています。</p>
+    <p>元ログは2ちゃんねる過去ログ（kako.5ch.io）のpart1〜part3（4スレ、4,004レス、9/12 20:10〜9/13 06:30）を機械的に取り込み、ID・トリップ・メール欄・時刻で突き合わせました。気象は気象庁の倉敷アメダスと福山特別地域気象観測所の毎時値、日の出と薄明は太陽の位置の計算式、距離はOpenStreetMapの座標から、携帯電話の電池はケータイWatchに載ったP503iSの仕様（連続通話 約145分）から求めています。</p>
     <p>9/13朝より後のスレは過去ログの索引に載っておらず、この検証の範囲外です。9/14・9/15の出来事は、前回の解析と各まとめサイトの記述によります。元画像のEXIF（撮影日時・機種）は転載時に消えていて確認できていません。それが残っていれば、写真が当夜のものかを確定できます。</p>
     <p>扱っているのは、20年以上前の匿名掲示板上のハンドルの振る舞いだけです。書き込んだ人の実名や身元を探る目的はありません。</p>
   </div>
@@ -532,6 +593,53 @@ $('nt').addEventListener('keydown',ev=>{if(ev.target.matches('input'))return;if(
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(drawMap,120)});
 render();
 
+
+const MEMBERS=[{"id": "hina", "name": "HINA", "color": "var(--lamp)", "role": "スレ主。「岡山の22歳OL」を名乗る", "verdict": "2時間足らずで姿を消した語り手", "vclass": "na", "posts": [[10.5, "hS7H5ala", "私は岡山に住んでる ２２歳の不真面目なＯＬなんですが 昨日、友達６人と飲みまくった挙句肝試しに行きました。 が、もう…"], [13.72, "hS7H5ala", "倉敷市にラブホテル『ドレミイン倉敷』という所があるんですが・・・"], [15.43, "hS7H5ala", "そこへ行く途中の茂みの中に高さ３Ｍ・幅２Ｍぐらいの柵があったんです。"], [16.47, "hS7H5ala", "セックスはしてません。本当にいないんです。"], [18.38, "hS7H5ala", "本名です。"], [19.4, "hS7H5ala", "５人だけは連絡がついてるのにそいつだけ連絡が取れないんです！！"], [20.1, "hS7H5ala", "スミマセン。トリップってどうやって付けるんですか？"], [22.4, "hS7H5ala", "ちょっとそれは出来ないんです。"], [25.32, "hS7H5ala", "これでいいんですか？"], [27.22, "hS7H5ala", "彼はちょっとＤＱＮな人で警察には頼めないんです。"], [28.27, "hS7H5ala", "あの夜酔っていたのでみんなでその柵を乗り越えて中に入ってみたんです。"], [31.8, "hS7H5ala", "そしたら、建物は無くて電灯だけが点いている場所に出たんです。"], [36.28, "hS7H5ala", "そして、その電灯の真下位の所に扉があって開けてみたんです。 そしたら、物凄く臭い、なんとも言えない匂いがしてきたんで…"], [37.42, "hS7H5ala", "２ちゃんブラウザってどうしたら使えるんですか？"], [42.08, "hS7H5ala", "その後５～６分くらいして中に入った３人の内２人が 『やばい、中に誰かおる！！ホンマやばい」っていいながら飛び出してき…"], [56.48, "hS7H5ala", "２ ４で車に乗ってきたので男２人が残って私たち３人は先に別の場所へ逃げました 20分くらいしてから残りの２人から電話…"], [61.68, "hS7H5ala", "まさしく、その辺りです。 その辺りからオメコ橋に通じる道の右側に柵はあります！"], [64.52, "hS7H5ala", "カナリ立派な柵があるのに建物は見あたらないんです。 その扉は地面についていて、そこだけを照らす様に街頭がついているん…"], [66.85, "hS7H5ala", "オメコ橋は通称です。カーセックスに使われる夜景のきれいな場所なんで そう呼ばれてるみたいです！ 岡山県民なら確実に知…"], [68.75, "hS7H5ala", "さん あの辺りの事で何か知ってる事ないですか！？"], [71.07, "hS7H5ala", "扉というか・・・とにかく葉っぱとかに埋もれていて バールで無理やりあけました。"], [75.33, "hS7H5ala", "私は1981・4・25生まれの間違いなく２３です！"], [76.47, "hS7H5ala", "さんの後者のほうです。"], [77.47, "hS7H5ala", "１を間違えました。スミマセン。"], [79.5, "hS7H5ala", "当方デジカメとか持ってないんです！ 本当にその場所はあるんですが・・・ 多分そうだと思いますが、その場所があまりにも…"], [90.27, "hS7H5ala", "すみません。まだシゴト中なんで、ＡＭ２時頃にまたきます！勝手ですみません"]], "seg": [[10.5, 90.3, "PCからスレに張りつく（26レス）", "rec"], [90.3, 630, "このIDでは二度と書き込まない", "rec"]], "finds": [["日曜の夜に「仕事中」", "2004年9月12日は日曜。20:10〜21:30の80分で26レス、平均3分おきに書きながら「まだ仕事中」と書いている。"], ["初心者の設定", "20:20に「トリップってどうやって付けるんですか？」、20:37に「2ちゃんブラウザってどうしたら使えるんですか？」と質問している。"], ["年齢を言い直す", "最初は22歳、21:15に「1981年4月25日生まれの間違いなく23」と訂正。自分の年齢を間違える語り手は珍しい。"], ["証拠は出さない", "場所は「ドレミイン倉敷へ行く途中」と具体的に言うが、「デジカメとか持ってない」として写真は一枚も出していない。"], ["約束の2時に戻らない", "「AM2時頃にまた来ます」と書いて以降、このIDの書き込みはない。3:18の「HINA」は別トリップの偽物。"]]}, {"id": "kuro", "name": "黒帯", "color": "var(--violet)", "role": "名無しから名乗り出た「捜索隊」", "verdict": "現場にいた痕跡が見つからない実況者", "vclass": "ng", "posts": [[245.1, "CMs8VNKF", "つか、今から俺がそこに行ってバールのようなもので 地面に生えてる扉ぶち開いて、中に潜入して 地底人だか幽霊だかと戦っ…"], [252.62, "CMs8VNKF", "動画かよ、俺ﾋﾞﾃﾞｵ持ってねぇし携帯もN503だしどうするか・・ ねえちゃんがﾊﾝﾃﾞｰｶﾑもってたな、それ借りる…"], [264.9, "CMs8VNKF", "とりあえずねえちゃんのﾊﾝﾃﾞｰｶﾑは玉砕した。 買って浮かれてるその日の夜に、黙って借りて俺のﾁﾝｺ動画そのままに…"], [278.28, "CMs8VNKF", "装備は整った。 極真の胴衣黒帯（ﾏｼﾞ物） ﾊﾞｰﾙのような物 ﾃﾞｼﾞｶﾒ お小遣い（480円） お腹空いたとき用…"], [307.73, "5EQtA/Hr", "携帯からﾃｽﾄ。出る時に携帯置いて逝くって言ったら 普段無関係な親父が持って行けて 親父のSH900i持たされた訳で…"], [334.3, "5EQtA/Hr", "現場付近到着。街灯のお陰で結構明るい。 ﾄﾞﾚﾐ付近捜索してみる。さっきそれぽいとこあったから。それにしても携帯から…"], [356.38, "5EQtA/Hr", "ｷﾞｰって言う音が響いたがなんなく蓋は開いた。 状況説明すると、ﾄﾞﾚﾐより裏側の鍵がかかったﾌｪﾝｽを発見。周りは…"], [369.88, "5EQtA/Hr", "ﾔﾊﾞｲ一度退避。 ちなみにｹﾞｲちゃう。ﾄﾘﾌﾟありがちな言葉入れたらこれかよ。まいいや。 多分下には複数人？いる…"], [391.67, "5EQtA/Hr", "入口近くの小部屋に隠れてる。人だと思うが会話になってないんだよ。声も喉が潰れたような声で何話してるかわからん。 携帯…"], [420.57, "5EQtA/Hr", "やっと見つけた。不思議な事に気配が消えた。小部屋から出て階段下りてさっきの部屋前に逝くも人気無し… 今は蓋の横の雑木…"], [437.63, "5EQtA/Hr", "今二人組と合流した。懐中電灯あるので中に入るか検討中。 でもこの二人なんか臭い…英検？て聞くもそーしか言わん。とりあ…"], [451.07, "5EQtA/Hr", "進むの早過ぎ。携帯だとつらい。電池がちとやばい。安易にでしゃばり過ぎたかもしれない。 相当な恐怖感が襲ってきてる。一…"], [462.05, "5EQtA/Hr", "ﾈﾀてなんだよ。好き勝手言って楽しいな。一人であんなとこ入ってみ"]], "seg": [[245.1, 278.3, "家のPCで準備を実況", "rec"], [278.3, 334.3, "移動（本人は40分、実際は56分）", "claim"], [334.3, 462.1, "「蓋の中・横」から携帯で実況", "claim"], [410, 460, "同じ時間、566は現場で誰も見ていない", "ng"]], "finds": [["車は運転しない設定", "出発前に「財布と免許と携帯は家に置いておく」と書いている。40分の道のりを、運転せずに来たことになる。"], ["描写の材料はHINAの書き込み", "柵・街灯の下の扉・臭い・バールは、すべてHINAが先に書いていた。黒帯が新しく足したのは、階段・小部屋・喉が潰れた声・ズルズル音など、誰も確かめられないものだけ。"], ["読めないはずのスレに即反応", "3:31に「レスが多くて前のレスを確認できない」と書くが、3:13のツレの書き込みには4分半後に「二人組と合流」と話を合わせている。"], ["呼びかけに誰も応えていない", "2:31に「付近に誰かいるなら明かりを中に向けて照らしてくれ」。2:50から566が現地を回ったが、光も人も見ていない。"], ["最後は捨て台詞", "3:42「ネタてなんだよ。好き勝手言って楽しいな」を最後に消える。"]]}, {"id": "kura", "name": "区らしき市民とツレ", "color": "var(--rust)", "role": "写真を撮った伝説の実況コンビ", "verdict": "実在の蓋を撮ったが、場所は倉敷ではなく福山", "vclass": "ng", "posts": [[343.33, "5lxX3mlU", "俺達も近くだから行ってやろうか？"], [346.27, "5lxX3mlU", "いやいや、マジでか。 本当なら、行ってもいいよ。 さがせばええの？"], [347.93, "5lxX3mlU", "俺はほんと近所に住んでるから、ぜんぜん恐くないよ。"], [348.97, "5lxX3mlU", "ほんなら写真とってくるわー。"], [351.5, "5lxX3mlU", "場所はだいたいわかるけど、もしかして、空気読んでない？折れ？"], [355.03, "5lxX3mlU", "ほんなら、一応マジで行ってくるわー。ツレと兄貴と行くわ。 俺、黒帯じゃなく英検４級だけど大丈夫かな。 棒かなんか持っ…"], [359.28, "5lxX3mlU", "あとさ、俺の携帯P503iSなんだけど、携帯のカメラで撮ってその場でうpる場合 どこにあげるか教えて。 デジカメのほ…"], [368.77, "5lxX3mlU", "いまから、原チャリで10～15分ぐらいで生きます。 アニキは趣味が運動の筋肉バカなんで、たぶん後ろから斬り付けられな…"], [393.88, "9mnKs2yQ", "区らしき市民から、「今付いたと！」電話が有ったんですが 携帯から2chにアクセスできないので、どうし…"], [398.65, "9mnKs2yQ", "今、ずーと電話つなげっぱーなんですが、いくら呼んでも応答ないです。 サぁーサァーしかいってません。"], [402.4, "9mnKs2yQ", "◆tGLUbl280sさんを探してるそうです。 ちょっと、やばい感じらしーんで、応援をこれから頼みま…"], [405.67, "9mnKs2yQ", "現場付近で2台カーセックスをしてる模様らしいです。 そいつらを勘違いして、ヤバイと思ったそうです。 …"], [409.6, "9mnKs2yQ", "一応、蓋に入らず手前の小屋に◆tGLUbl280sさんが隠れてるといいましたが 「おらんよ、あっﾉ兄…"], [414.67, "9mnKs2yQ", "電話が繋がりました。 犬カネコか何かの死体がくさっとるらしく、大変臭いらしいです。"], [418.53, "9mnKs2yQ", "とりあえず、人が隠れてるそうなトコや探したり、これだけ俺らウロチョロしてんのに、 ◆tGLUbl28…"], [422.75, "9mnKs2yQ", "「おらんーーーーーおぅりゃーーおらんーーー」 と今大声で叫んでますが、◆tGLUbl280s さん聞…"], [425.17, "9mnKs2yQ", "蓋が溶接去れてるそうです。"], [429.33, "9mnKs2yQ", "いや、蓋みたいなのははそこらかしこにけっこうあるそうですが、 人間の体が入るやつは、今まで見たやつは…"], [433.13, "9mnKs2yQ", "なんか、オメコ橋に応援の2人のツレと合流したみたいなんで、兄貴が帰るそうです。 とりあえず探すそうな…"], [445.83, "9mnKs2yQ", "兄貴帰ってきました。 ちがうよーーーーーーーーーー 俺の連れは、俺のツレと合流しただけで、◆tGLU…"], [449.17, "9mnKs2yQ", "写真どこに揚げましょうか"], [454.33, "9mnKs2yQ", "［画像URL］ とりあえずいちまいです。 遅いんで、待って下さいね。"], [458.45, "9mnKs2yQ", "［画像URL］ ［画像URL］ デジカメです。"], [467.62, "9mnKs2yQ", "写真の場所だけ、無理矢理剥げば中に入れるみたいだったらしく がんばったが無理だったらしい。 でも、ツ…"], [470.1, "9mnKs2yQ", "まだ知らん人とは誰とも、遭遇してないそうです。 クルマは3台通過したそうです。 「こんなに懐中てらし…"], [475.13, "9mnKs2yQ", "なんか、5.6人きたそーで、物陰でかくれるそうです。 若いやつじゃなく、おっさんらしーんですが、蓋を…"], [478.72, "9mnKs2yQ", "3人帰って、2人蓋の近くで話してるそうです。 ヤバイかもしれないので、もう一度兄貴が行くそうです。"], [481.73, "9mnKs2yQ", "また５.６人増えたそうです。 おばさんが2人いたらしく、１人は異様に背のこまい人がちゃーちゃーしゃべ…"], [485.43, "9mnKs2yQ", "とりあえず、バレずに逃げて兄貴と合流するそうです。 一代来たクルマのナンバーは 長野？？ 63-？？…"], [489.52, "9mnKs2yQ", "なにか、車に積んでるそうです。 高速が？鎧？いとう？ささき？つぐ？光り？ が会話から聞き取れたそうで…"], [494.63, "9mnKs2yQ", "今は盗み聞きの最中らしいです。 「右行って、30～50ののー？」「つめ、つめ、つめ、」 566さんが…"], [499.62, "9mnKs2yQ", "パジェロかサーフみたいなのが来たそうです。 かわらず、こまいおっさんが電話しながらしゃべってるそうで…"], [502.42, "9mnKs2yQ", "犬が降りてきたそうです。 とりあえず、逃げます そうです 566さん、ドレミの周りで潜んでます。 お…"], [507.22, "9mnKs2yQ", "近所だから、隠れるトコや裏道はくわしいけど、普段と地元民しか知らない抜け道から 車が来たから、ヤバイ…"], [508.85, "9mnKs2yQ", "兄貴と合流したそうです。 あんちゃんが来る途中、歩く青年を見たそうです、566さんですか？ 黒Tでジ…"], [513.98, "9mnKs2yQ", "566さんがドレミ付近に行くそうだと伝えました。 疑って悪いのですが一応ワナだといけないので、確認す…"], [518.6, "9mnKs2yQ", "今、チェイサーみたいなのがドレミにはいりました。 ヤバイんで少し離れるそうです。"], [522.25, "9mnKs2yQ", "チェイサーは和泉ナンバー 5？-？0です。 パジェは？？ナンバー ・8？？だそうです。 とりあえず、…"], [524.65, "9mnKs2yQ", "帰れと教えたほうがいいんですか？"], [526.85, "9mnKs2yQ", "「えっ？俺達パクラレルの？えーーーうぇーーーーー」 と言ってます。"], [529.05, "9mnKs2yQ", "566さんを舞ってこないんなら、いたら、おっさんらーの写真とって逃げるーらしいです。 オチがなくてス…"], [532.85, "9mnKs2yQ", "兄貴とツレのツレのT君がなんぼ言っても聞かず、見張りを見張りにいきました。 ツレとツレのツレはまだ隠…"], [535.55, "9mnKs2yQ", "兄貴が凄く焦ってツレを呼んでるそーです。"], [536.38, "9mnKs2yQ", "蓋がないそうです。えーーーー"], [538.2, "9mnKs2yQ", "あいてます、あいてます、あいてるそうです。"], [539.2, "9mnKs2yQ", "近くで確認は無理だそうです。 あいてると言うか、ずれて人が余裕はいれそうな感じらしいです。"], [540.83, "9mnKs2yQ", "近寄れないそうです。正直ビビッてます だそうです。"], [542.53, "9mnKs2yQ", "50mか100mぐらいはなれたところから覘いてるらしいんですが まだ、人間の気配は感じるそうなんで、…"], [544.97, "9mnKs2yQ", "写真は今はカンベンしてくれとのことです。 「100％バレルじゃろーが、」と少しおこりぎみですが、T君…"], [548.07, "9mnKs2yQ", "金属音がきこえるそうです。 あと、さっき上を車が通るおともしたそうです"], [552.65, "9mnKs2yQ", "ライトが見えたので見ると、おっさんが1人蓋のトコにいつの間にかいて タバコ吸ってるそうです。 小指の…"], [555.02, "9mnKs2yQ", "山の上の方でクラクションをプゥープゥー鳴ったから、後ろを確認して 前を見たら、おっさんが蓋のトコに居…"], [561.45, "9mnKs2yQ", "ふしあなさんってなんなんすか？ おっさんが、おこりぎみで電話してるそうです。"], [564.5, "9mnKs2yQ", "ドレミの近くで車でB君が待機してますが、566さんの行った車の特徴の車は通過してないそうです。 蚊に…"], [571.62, "9mnKs2yQ", "ネタではないです。"], [573.85, "9mnKs2yQ", "僕はよくわかりませんが「ふしあなさんをするとIPがどうとか……」 ツレがいったんで、言っただけです。…"], [576.4, "9mnKs2yQ", "「ネタだけはつらい…」と言ってます。 今は、おっさんがもくもくタバコすってるだけです"], [578.35, "9mnKs2yQ", "もうかなり明るくなってるから、ヤバイかもﾉﾉと言ってます。"], [580.55, "9mnKs2yQ", "とりあえず、ドレミ方向に向うそうです。"], [584.07, "9mnKs2yQ", "とりあえず、オメコ橋に行って、考えるそうです。"], [587.32, "9mnKs2yQ", "すみません、僕はカメラ持っないので、無理です。 ツレが帰ってきたら、変わります。 不馴れですみません"], [592.48, "9mnKs2yQ", "おっさんらが通るのはオメコ橋の少し離れたトコと、裏出口の2箇所だと掛けて そこを張るかと、兄貴が言っ…"], [600.1, "9mnKs2yQ", "ワインの車におっさんが乗って、山に入っていきました。 電話で聞いたことを書いてるので、すみません。"], [621.58, "9mnKs2yQ", "兄貴が帰ってきました。 がんばって車写したらしいのですが、あんまりはっきり写ってないです。 行きと帰…"], [622.98, "9mnKs2yQ", "上の人はしりません。 ツレの携帯は書き込めないと行ってました。"]], "seg": [[343.3, 368.8, "区らしき：福山の自宅のPCで参加", "likely"], [368.8, 382, "区らしき：原チャリで草戸の蓋へ", "likely"], [382, 600, "区らしき一行：草戸の蓋のまわり（電話で中継）", "likely"], [433.1, 445.8, "兄貴：写真を持ってツレの家へ（12分）", "likely"], [393.9, 623, "ツレ：自宅のPCで代筆", "rec"], [502, 590, "「ドレミ付近」の報告（566と全部食い違う）", "ng"]], "finds": [["本人は現場から一度も書いていない", "区らしき（ID:5lxX3mlU）は2:08で最後。以降の57レスは、同じトリップを使うツレ（ID:9mnKs2yQ）が電話で聞いて書いたもの。"], ["最初から複数人", "最初の書き込みが「俺達も近くだから行ってやろうか？」。ツレと兄貴を連れて行く前提だった。"], ["フシアナには応じない", "5時台に住民がプロバイダ名を出す「フシアナ」を求めたが、ツレは「ふしあなさんってなんなんすか？」とかわした。出せば、福山の回線だと分かった可能性がある。"], ["「電話つなげっぱ」の電池", "区らしきの携帯P503iSの連続通話時間は、新品でも約145分。2:54に電話がつながり直してから最後の中継（5:44）までは170分ある。1回の充電でずっとつなぎっぱなしは難しい（参考）。"], ["撮った蓋は本物", "写真の蓋は2007年に福山市草戸町で見つかり、本人も「正解」と認めた。嘘は「場所」の部分にある。"]]}, {"id": "s566", "name": "566", "color": "var(--proof)", "role": "車で倉敷の現場に2回行った住民", "verdict": "現地にいたことを確かめられる唯一の人物", "vclass": "ok", "posts": [[368.48, "rMZZOyUw", "トリップ付けた。スキルはないな～ 失効してるけどB級ﾗｲｾﾝｽくらいか？ 懐中電灯なら携帯で代用できると思われ とい…"], [374.05, "rMZZOyUw", "こりゃマジやばそうだな… 工具系凶器ならいくらでもあるから武器補給の後方支援でOKなら出動するが… 携帯の充電そろそ…"], [377.53, "rMZZOyUw", "ちょっと待ってくれ… 今スレを読み返して場所を確認中"], [385.68, "rMZZOyUw", "場所は↓ココ？ドレミｉｎ倉敷を越えて、そのまま上って行けばいいの？ ［画像URL］"], [393.85, "rMZZOyUw", "ＯＫ！ これから出発します！ デジカメの充電が不安だが、ドレミ付近で捜索します こちらは車です 車のヘッドライトはマ…"], [474.87, "O/eDLk2s", "お待たせしました。ただいま戻りました。 スレの進行がわからないので、まず一方的に簡単にご報告 2時50分 予想より早…"], [480.95, "O/eDLk2s", "うｐろだないっすか？ ってか、みんなまだいるのか・・・ 襲撃するなら再出動しますが"], [485.98, "O/eDLk2s", "わー！やべ！俺が思ってた柵は違う柵だ！ 最初に「ドレミのBGM…」っていう書き込みがあったから、 ドレミのすぐ上にあ…"], [490.57, "O/eDLk2s", "多いというわけではないが、 ドレミから橋まで、壊れた鉄柵が数ヶ所 幅と高さがどこかに書いてあったと思うけど その情報…"], [493.1, "O/eDLk2s", "あの周辺は土方の資材置き場があったので 資材の積み込みではないかと思われ"], [507.6, "O/eDLk2s", "よっしゃ！もう一度出動します こちらの車はセダン型、パールツートン（夜だと白に見えるかも？） 目印にヘッドライトと一…"], [509.77, "O/eDLk2s", "まだ出動してませんよ！ これから出動なので、10～15分お待ちを！"], [596.5, "b57i9CNK", "帰りました とりあえずどーなってるの？"], [597.38, "b57i9CNK", "まずは、フシアナさんがどうとかというレスを読んでいたので、 こちらもフシアナさんしてみる"], [598.58, "b57i9CNK", "あ、できてねぇ… 名前欄に直接入力してみたので、 IDで同一人物だと判断しておくれ"], [600.55, "b57i9CNK", "さて、まず報告だけど、 ネタか真実かは別として、とにかく俺は誰にも会わなかった。 書き込んだとおり、天城街道からドレ…"], [606.62, "b57i9CNK", "その後、路駐の状態で、携帯にてｽﾚをﾁｪｯｸ、 もう一度説明するけど、俺の携帯はVodafoneなので書き込みはでき…"], [613.0, "b57i9CNK", "写真発見した。これは現地の画像すぎてわからん・・・ とりあえず車から降りたのは、橋上で橋まで来たという証明のために撮…"], [623.02, "LGdAM2fZ", "ちなみにそのｵｯｻﾝはドレミまで下りて行ったので おそらく普通のｵｯｻﾝ あと、区らしき氏には申し訳ないが、 「車が…"]], "seg": [[368.5, 393.9, "自宅で準備（携帯の充電・懐中電灯）", "rec"], [393.9, 410, "車で倉敷のドレミへ（15分）", "rec"], [410, 460, "ドレミ周辺を探索、誰もいない", "rec"], [460, 474.9, "帰宅", "rec"], [509.8, 527, "再出動", "rec"], [527, 590, "ドレミ〜橋を往復して待機", "rec"], [590, 596.5, "帰宅", "rec"]], "finds": [["帰るたびにIDが変わる", "一晩で4つのID（rMZZOyUw → O/eDLk2s → b57i9CNK → LGdAM2fZ）。出かける前に回線を切り、帰ってつなぎ直した動きと合う。"], ["接続元は岡山", "5:58に「フシアナ」で出たプロバイダ名は、BIGLOBEの岡山のアクセスポイント（oky）だった。倉敷の現場まで車で15分という話と合う。"], ["出かけている間は書き込みゼロ", "携帯がVodafoneで2ちゃんねるに書き込めない、と本人が説明している。実際、外出中の書き込みは一つもない。"], ["食い違いを自分で指摘", "「区らしき氏には申し訳ないが」と、車の台数が合わないことを自分から書いている。"]]}, {"id": "li8t", "name": "◆Li8t（もう一人の区らしき）", "color": "var(--muted)", "role": "朝6時に現れた「区らしき本人」", "verdict": "本物を名乗った別人の可能性が高い", "vclass": "ng", "posts": [[615.08, "sDCjgDxS", "手持ちのノートＰＣの電源が切れたんで、ラブホの近くのネットカフェにきました。 ５５６さんごめんね(´；ω；`)"], [617.12, "sDCjgDxS", "トリップ複雑すぎておぼえてないっす。あとツレというのは知らないけど？ だれ？"], [618.15, "sDCjgDxS", "横にビデオ屋があったでしょ？ その二階です"], [620.95, "sDCjgDxS", "ネットカフェの場所分かる人はきていただけると説明しやすいです デジカメはアボーンしてるけどSDは残ってるんでお渡しし…"], [621.55, "sDCjgDxS", "兄貴以外いませんよ？"], [626.23, "sDCjgDxS", "そろそろネタばれしてやろうよ＞ツレ"]], "seg": [[615.1, 626.2, "「ラブホ近くのネットカフェ」から投稿（本人申告）", "claim"]], "finds": [["トリップが違う理由", "「トリップ複雑すぎて覚えてない」と書く。本物なら使えたはずのトリップを使えない言い訳になっている。"], ["ツレを知らない", "「ツレというのは知らないけど？だれ？」。本物の区らしきは最初から「ツレと兄貴と行く」と書いていた。"], ["2秒差の投稿", "6:21:33に◆Li8t、6:21:35にツレが、別々のIDから投稿。一人で両方を書くのはまず無理。"], ["場所の話が具体的すぎる", "「ノートPCの電源が切れたのでラブホ近くのネットカフェに来た」「ビデオ屋の二階」。確かめようがないのに細かい。"], ["翌日に「全部うそ」", "9/14 0:07にこのトリップで「俺の発言は全部うそ」と宣言する（前回の解析）。有名な「区らしきの嘘宣言」は、この人物のもの。"]]}, {"id": "fakeh", "name": "偽HINA（◆AU）", "color": "var(--muted)", "role": "一度だけHINAを名乗った名無し", "verdict": "携帯から茶々を入れていた見物人", "vclass": "na", "posts": [[438.15, "X62JMIb4", "なんだって？"], [463.8, "X62JMIb4", "柵って3mくらいあるんじゃなかったのか？"], [467.07, "X62JMIb4", "【本当に】見つけた【危ない】"], [483.55, "X62JMIb4", "誰から聞いてるんだ？"], [497.33, "X62JMIb4", "超兄貴"], [528.13, "X62JMIb4", "HINAのおっぱいﾏﾀﾞｰ？"], [532.88, "X62JMIb4", "たしか携帯の電池がないとかなんとか"], [538.92, "X62JMIb4", "開けたらだめだ！"], [554.7, "X62JMIb4", "携帯から書き込む時に いちいちsageっていれるのかなぁ"], [558.25, "X62JMIb4", "携帯からです"], [561.77, "X62JMIb4", "会社にしかＰＣなくて、昨日の21時くらいに変なスレが立ちやがったから気になったのですよ"], [569.03, "X62JMIb4", "556が行方不明になったら大問題なわけだが"], [578.85, "X62JMIb4", "ふしあなってなんですか？"]], "seg": [[438.1, 578.9, "携帯から書き込み（本人申告）", "claim"]], "finds": [["HINAを名乗ったのは一度だけ", "3:18に別トリップで「なんだって？」。その後は名無しで12レス。"], ["携帯から", "「携帯からです」「会社にしかPCなくて」と本人が書いている。平均18字の短い書き込みばかり。"]]}];
+// ---- メンバー別タイムライン ----
+const CONF={rec:['記録で確認','rec'],likely:['有力な推測','likely'],claim:['本人の申告だけ','claim'],ng:['記録と食い違う','ng']};
+const mbst={m:0,all:false};
+function mbStrip(m){
+  const svg=$('mbstrip'),W=Math.max(300,svg.parentNode.clientWidth),nar=W<520,L=8,R=8;
+  const ts=[...m.posts.map(p=>p[0]),...m.seg.map(s=>s[0]),...m.seg.map(s=>Math.min(s[1],m.posts[m.posts.length-1][0]+40))];
+  const A=Math.max(0,Math.floor((Math.min(...ts)-15)/60)*60),B=Math.min(TMAX,Math.ceil((Math.max(...ts)+15)/60)*60),x=t=>L+(Math.min(Math.max(t,A),B)-A)/(B-A)*(W-L-R),step=(nar&&B-A>300)?120:60;
+  // segments into lanes
+  const lanes=[];const segs=m.seg.map(s=>{let l=0;while(lanes[l]&&lanes[l]>s[0]+0.1)l++;lanes[l]=s[1];return [...s,l]});
+  const yP=20,y0=40,lh=22,H=y0+lanes.length*lh+26;
+  let g='';
+  for(let t=A;t<B;t+=step)g+=`<line x1="${x(t)}" y1="8" x2="${x(t)}" y2="${H-20}" stroke="var(--line)"/><text x="${x(t)+3}" y="${H-6}" font-size="10" fill="var(--muted)" ${M}>${hm(t).replace(/^0/,'')}</text>`;
+  if(B>531)g+=`<rect x="${x(531)}" y="8" width="${x(B)-x(531)}" height="${H-28}" fill="var(--sky-day)" opacity=".08"/>`;
+  let prev=null;
+  m.posts.forEach(p=>{if(prev!==null&&p[1]!==prev)g+=`<line x1="${x(p[0])}" y1="${yP-10}" x2="${x(p[0])}" y2="${yP+10}" stroke="var(--ink)" stroke-width="1.5"/>`;prev=p[1];g+=`<circle cx="${x(p[0])}" cy="${yP}" r="3.6" fill="${m.color}" opacity=".85"/>`});
+  segs.forEach(([a,b,l,c,lane])=>{const y=y0+lane*lh,w=Math.max(4,x(b)-x(a));
+    const st=c==='rec'?`fill="${m.color}" fill-opacity=".55" stroke="${m.color}"`:c==='likely'?`fill="${m.color}" fill-opacity=".2" stroke="${m.color}" stroke-width="1.5"`:c==='claim'?`fill="none" stroke="${m.color}" stroke-width="1.5" stroke-dasharray="4 3"`:`fill="var(--rust)" fill-opacity=".18" stroke="var(--rust)" stroke-width="1.5"`;
+    g+=`<rect x="${x(a)}" y="${y-8}" width="${w}" height="16" rx="3" ${st}/>`;
+    if(w>l.length*11.5+10)g+=`<text x="${x(a)+5}" y="${y+4}" font-size="11" fill="var(--ink)" ${F}>${esc(l)}</text>`;});
+  g+=`<text x="${W-R}" y="${yP-8}" text-anchor="end" font-size="10" fill="var(--muted)" ${F}>● 投稿　│ IDが変わった所</text>`;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.innerHTML=g;
+}
+function mbRender(){
+  const m=MEMBERS[mbst.m];
+  $('mbtabs').innerHTML=MEMBERS.map((x,i)=>`<button type="button" role="tab" aria-selected="${i===mbst.m}" class="mbtab${i===mbst.m?' on':''}" data-i="${i}"><i style="background:${x.color}"></i>${esc(x.name)}<span>${x.posts.length}</span></button>`).join('');
+  const ids=[...new Set(m.posts.map(p=>p[1]))];
+  const items=[...m.seg.map(s=>({t:s[0],seg:s})),...m.posts.map(p=>({t:p[0],p}))].sort((a,b)=>a.t-b.t||(a.seg?-1:1));
+  const LIM=14;let shown=0,hidden=0,prevId=null;
+  const li=items.map(it=>{
+    if(it.seg){const [a,b,l,c]=it.seg;return `<li class="mb-seg ${CONF[c][1]}" style="--mc:${m.color}"><span class="mb-t">${hm(a)}〜${hm(b)}</span><span class="mb-l">${esc(l)}</span><span class="conf ${CONF[c][1]}">${CONF[c][0]}</span></li>`;}
+    const p=it.p,idc=p[1]!==prevId;prevId=p[1];
+    if(!mbst.all&&shown>=LIM){hidden++;return ''}shown++;
+    return `<li class="mb-post"><span class="mb-t">${hm(p[0])}</span><div>${idc?`<span class="mb-id">ID:${esc(p[1])}</span>`:''}<p>${esc(p[2])}</p></div></li>`;}).join('');
+  $('mb').innerHTML=`<div class="mb-head" style="--mc:${m.color}"><div><h3>${esc(m.name)}</h3><p>${esc(m.role)}</p></div><span class="mb-verdict ${m.vclass}">${esc(m.verdict)}</span></div>
+   <div class="mb-stats"><div><b class="mono">${m.posts.length}</b><span>この夜の投稿</span></div><div><b class="mono">${ids.length}</b><span>使ったID</span></div><div><b class="mono">${hm(m.posts[0][0])}</b><span>最初の投稿</span></div><div><b class="mono">${hm(m.posts[m.posts.length-1][0])}</b><span>最後の投稿</span></div></div>
+   <div class="mb-strip"><svg id="mbstrip" role="img" aria-label="${esc(m.name)}の投稿と行動の時間帯"></svg>
+     <div class="mb-legend"><span class="conf rec">記録で確認</span><span class="conf likely">有力な推測</span><span class="conf claim">本人の申告だけ</span><span class="conf ng">記録と食い違う</span></div></div>
+   <div class="mb-cols"><div class="mb-finds"><h4>見どころ</h4><ol>${m.finds.map(f=>`<li><b>${esc(f[0])}</b><p>${esc(f[1])}</p></li>`).join('')}</ol></div>
+   <div class="mb-list"><h4>投稿と行動の流れ</h4><ol>${li}</ol>${hidden?`<button type="button" class="mb-more" id="mbmore">残りの投稿${hidden}件を表示</button>`:''}</div></div>`;
+  mbStrip(m);
+  const mm=$('mbmore');if(mm)mm.onclick=()=>{mbst.all=true;mbRender();track('member_more',{member:m.id})};
+}
+$('mbtabs').addEventListener('click',e=>{const b=e.target.closest('.mbtab');if(!b)return;mbst.m=+b.dataset.i;mbst.all=false;mbRender();track('member_view',{member:MEMBERS[mbst.m].id})});
+addEventListener('resize',()=>{clearTimeout(window.__mb);window.__mb=setTimeout(()=>mbStrip(MEMBERS[mbst.m]),130)});
+mbRender();
 
 // figures reuse the card visualizations
 document.getElementById('distviz').innerHTML=VZ.map({reach:1});
