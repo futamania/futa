@@ -475,6 +475,26 @@ td,th,.mono,a{overflow-wrap:anywhere}
 .ai-take ol{margin:0;padding-left:1.4em;display:grid;gap:8px}
 .ai-take li{line-height:1.9;max-width:42em}
 @media (max-width:600px){.ai-pics{grid-template-columns:minmax(0,1fr)}.vs-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.vs-row>span{grid-column:1/-1;padding:6px 12px}.vs-head>span{display:none}.ai-s{padding:14px}}
+/* share */
+.share{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.share-l{font-size:.86rem;color:var(--muted);margin-right:4px}
+.sh{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;font-size:.88rem;font-weight:700;text-decoration:none;cursor:pointer;white-space:nowrap}
+.sh:hover{border-color:var(--ink)}
+.sh svg{width:16px;height:16px;flex:none}
+.sh-x i,.sh-line i,.sh-hb i{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;font-style:normal;font-size:.72rem;font-weight:800;color:#fff}
+.sh-x i{background:#000;box-shadow:0 0 0 1px var(--line)}.sh-line i{background:#06C755}.sh-hb i{background:#00A4DE}
+.sh.done{border-color:var(--proof);color:var(--proof)}
+.share-end{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px;margin-top:8px}
+.share-end p{font-weight:700}
+.fab{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:grid;justify-items:end;gap:10px;pointer-events:none;opacity:0;transform:translateY(12px);transition:opacity .2s,transform .2s}
+.fab.on{opacity:1;transform:none}
+.fab.on>*{pointer-events:auto}
+.fab-b{width:54px;height:54px;border-radius:50%;border:none;background:var(--rust);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.fab-b svg{width:24px;height:24px}
+.fab-m{display:none;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.fab.open .fab-m{display:grid}
+.fab-m .sh{justify-content:flex-start}
+@media (prefers-reduced-motion:reduce){.fab{transition:none}}
 </style>
 </head>
 <body>
@@ -489,6 +509,7 @@ td,th,.mono,a{overflow-wrap:anywhere}
     <div><b class="mono">29話</b><small>まとめサイトの区切りで、本編21話・福山編4話・完結編4話</small></div>
     <div><b class="mono">41.6km</b><small>捜索の舞台ドレミイン倉敷と、実際に蓋があった福山市草戸町の距離</small></div>
   </div>
+  <div class="share" aria-label="このページを共有"><span class="share-l">シェア</span><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div>
 </header>
 
 <nav class="toc" aria-label="目次">
@@ -867,6 +888,8 @@ td,th,.mono,a{overflow-wrap:anywhere}
   </div>
 </section>
 
+<div class="share-end"><p>おもしろかったら、蓋スレを知らない人にも。</p><div class="share"><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div></div>
+<div class="fab" id="fab"><div class="fab-m" id="fabm" role="menu"><a class="sh sh-x" data-sh="x" href="#" target="_blank" rel="noopener"><i>𝕏</i>ポスト</a><a class="sh sh-line" data-sh="line" href="#" target="_blank" rel="noopener"><i>L</i>LINE</a><a class="sh sh-hb" data-sh="hatena" href="#" target="_blank" rel="noopener"><i>B!</i>はてブ</a><button type="button" class="sh" data-sh="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>リンクをコピー</span></button></div><button type="button" class="fab-b" id="fabb" aria-label="このページを共有" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button></div>
 <footer>データで見る蓋スレ ／ 2026年10月31日作成。数値の出典は本文とリンク欄のとおり。<br>このサイトはアクセス解析にGoogleアナリティクスを使用しています。データは匿名で収集され、個人を特定するものではありません。<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleによるデータの使用について</a></footer>
 </div>
 
@@ -1368,6 +1391,28 @@ document.querySelectorAll('[data-av]').forEach(el=>{el.innerHTML=el.dataset.av.s
   const y=top+rows.length*rh;g+=tx(L,y+13,'2つ並んだ蓋',{fs:12,w:700,c:'var(--rust)'})+`<circle cx="${L+8}" cy="${y+27}" r="7" fill="var(--rust)"/>`+tx(L+22,y+32,'1か所（ストリートビューで確認）',{fs:12,w:700,c:'var(--rust)'});
   g+=tx(W-8,y+50,'棒の長さは対数目盛り',{a:'end',fs:10.5,c:'var(--muted)'});
   document.getElementById('aifunnel').innerHTML=sv(y+58,g,'探す道路の絞り込み');
+})();
+
+
+// ---- 共有 ----
+(function(){
+  const U='https://futamania.github.io/futa/',T='蓋スレ（倉敷蓋事件）まとめ｜蓋の場所・真相・全年表をデータで検証',e=encodeURIComponent;
+  const href={x:`https://x.com/intent/post?text=${e(T)}&url=${e(U)}&hashtags=${e('蓋スレ')}`,line:`https://social-plugins.line.me/lineit/share?url=${e(U)}`,hatena:`https://b.hatena.ne.jp/add?mode=confirm&url=${e(U)}&title=${e(T)}`};
+  document.querySelectorAll('[data-sh]').forEach(a=>{const k=a.dataset.sh;if(href[k])a.href=href[k]});
+  const copy=async b=>{let ok=false;try{await navigator.clipboard.writeText(U);ok=true}catch(err){const t=document.createElement('textarea');t.value=U;document.body.appendChild(t);t.select();try{ok=document.execCommand('copy')}catch(_){}t.remove()}
+    const sp=b.querySelector('span');if(sp){const o=sp.textContent;sp.textContent=ok?'コピーしました':'コピーできませんでした';b.classList.toggle('done',ok);setTimeout(()=>{sp.textContent=o;b.classList.remove('done')},1800)}};
+  document.addEventListener('click',ev=>{const a=ev.target.closest('[data-sh]');if(!a)return;const k=a.dataset.sh,where=a.closest('.fab')?'float':a.closest('header')?'top':'end';track('share',{method:k,where});if(k==='copy'){ev.preventDefault();copy(a)}});
+  const fab=document.getElementById('fab'),fb=document.getElementById('fabb');
+  const setOpen=o=>{fab.classList.toggle('open',o);fb.setAttribute('aria-expanded',o)};
+  fb.addEventListener('click',async()=>{if(navigator.share&&matchMedia('(pointer:coarse)').matches){try{await navigator.share({title:T,url:U});track('share',{method:'native',where:'float'})}catch(_){}return}setOpen(!fab.classList.contains('open'))});
+  document.addEventListener('click',ev=>{if(!ev.target.closest('#fab'))setOpen(false)});
+  document.addEventListener('keydown',ev=>{if(ev.key==='Escape')setOpen(false)});
+  const st={hero:true,end:false,nt:false};const upd=()=>{const on=!st.hero&&!st.end&&!st.nt;fab.classList.toggle('on',on);if(!on)setOpen(false)};
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(es=>{st.hero=es[0].isIntersecting;upd()}).observe(document.querySelector('header.hero'));
+    new IntersectionObserver(es=>{st.end=es[0].isIntersecting;upd()}).observe(document.querySelector('.share-end'));
+    const nt=document.getElementById('nt');if(nt)new MutationObserver(()=>{st.nt=nt.classList.contains('ctrl-on')&&matchMedia('(max-width:760px)').matches;upd()}).observe(nt,{attributes:true,attributeFilter:['class']});
+  }
 })();
 
 // era bar chart: months 2004-09 .. 2007-02, 話数
