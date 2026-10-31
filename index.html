@@ -473,7 +473,7 @@ p,dd,li,td,th,h1,h2,h3,dt,small,blockquote{overflow-wrap:anywhere}
   <div style="display:grid;gap:10px">
     <p class="eyebrow">Timeline ／ 2004年9月12日 20:00 — 9月13日 06:30</p>
     <h2 id="tlh">あの夜、スレと現実</h2>
-    <p class="prose">いちばん注目された一晩を、28の場面で追います。各カードの上段が当時スレに届いた報告、下段が記録から分かる実際です。上の全体図は、山がスレの勢い、▲の列が報告、▼の列が実際の出来事です。全体図をタップするとその時刻へ、場面ボタンで章ごとに移動できます。スマホではカードを左右にスワイプしても進めます。</p>
+    <p class="prose">いちばん注目された一晩を、27の場面で追います。各カードの上段が当時スレに届いた報告、下段が記録から分かる実際です。上の全体図は、山がスレの勢い、▲の列が報告、▼の列が実際の出来事です。全体図をタップするとその時刻へ、場面ボタンで章ごとに移動できます。スマホではカードを左右にスワイプしても進めます。</p>
   </div>
   <div class="nt" id="nt">
     <div class="nt-bar">
@@ -946,15 +946,16 @@ document.getElementById('wordsl').innerHTML=WORDS.map(w=>`<div><dt>${esc(w[0])}<
 
 // places map (equirectangular around 34.5N)
 (function(){
-  const W=360,H=250,lo0=133.30,lo1=133.84,la0=34.44,la1=34.62,k=Math.cos(34.53*Math.PI/180);
-  const sx=(W-30)/((lo1-lo0)*k),x=lo=>15+(lo-lo0)*k*sx,y=la=>H-30-(la-la0)*sx;
-  let g=`<line x1="${x(133.3528)}" y1="${y(34.4797)}" x2="${x(133.7897)}" y2="${y(34.5814)}" stroke="var(--muted)" stroke-dasharray="5 6"/>`;
-  g+=tx((x(133.3528)+x(133.7897))/2+6,(y(34.4797)+y(34.5814))/2+22,'41.6 km',{fs:15,w:700,m:1,c:'var(--rust)'});
-  g+=`<rect x="${x(133.79)-30}" y="${y(34.59)-12}" width="58" height="28" rx="14" fill="var(--proof)" opacity=".12"/>`;
-  const lab={'ドレミイン倉敷':[-8,-14,'end'],'帯江小学校':[-8,-28,'end'],'倉敷ハイツ':[0,0,''],'笠岡市':[0,-12,'middle'],'草戸町（区らしきの蓋）':[10,-10,'start'],'明王台':[-4,18,'start'],'福山駅':[10,4,'start']};
-  PLACES.forEach(([n,la,lo,c,d])=>{const px=x(lo),py=y(la);g+=`<circle cx="${px}" cy="${py}" r="${c==='rust'?6:4.5}" fill="var(--${c})"/>`;const L=lab[n];if(L[2])g+=tx(px+L[0],py+L[1],n,{a:L[2],fs:12.5,w:c==='rust'?700:400})});
-  const kmPx=sx/111;g+=`<line x1="15" y1="${H-10}" x2="${15+10*kmPx}" y2="${H-10}" stroke="var(--ink)" stroke-width="2"/>`+tx(15+10*kmPx+6,H-6,'10km',{fs:11,m:1});
-  g+=tx(W-10,16,'岡山県 →',{a:'end',fs:11,c:'var(--muted)'})+tx(12,16,'← 広島県',{fs:11,c:'var(--muted)'});
+  const W=360,lo0=133.30,lo1=133.84,la0=34.455,la1=34.600,k=Math.cos(34.53*Math.PI/180);
+  const sx=(W-30)/((lo1-lo0)*k),T=46,H=Math.round((la1-la0)*sx)+T+40,x=lo=>15+(lo-lo0)*k*sx,y=la=>T+(la1-la)*sx;
+  const P=n=>PLACES.find(p=>p[0]===n),D=P('ドレミイン倉敷'),K=P('草戸町（区らしきの蓋）');
+  let g=`<line x1="${x(K[2])}" y1="${y(K[1])}" x2="${x(D[2])}" y2="${y(D[1])}" stroke="var(--muted)" stroke-dasharray="5 6"/>`;
+  const mx=(x(K[2])+x(D[2]))/2,my=(y(K[1])+y(D[1]))/2;
+  g+=tx(mx+4,my-12,'41.6 km',{a:'middle',fs:15,w:700,m:1,c:'var(--rust)'});
+  const lab={'ドレミイン倉敷':[-10,-10,'end',1],'帯江小学校':[-10,-26,'end',0],'笠岡市':[0,22,'middle',0],'草戸町（区らしきの蓋）':[2,-14,'start',1],'明王台':[-2,20,'start',0]};
+  PLACES.forEach(([n,la,lo,c])=>{const L=lab[n];if(!L)return;const px=x(lo),py=y(la);g+=`<circle cx="${px}" cy="${py}" r="${c==='rust'||n==='ドレミイン倉敷'?6:4.5}" fill="var(--${c})"/>`+tx(px+L[0],py+L[1],n==='草戸町（区らしきの蓋）'?'区らしきの蓋（草戸町）':n,{a:L[2],fs:L[3]?13.5:12,w:L[3]?700:400})});
+  const kmPx=sx/111;g+=`<line x1="15" y1="${H-12}" x2="${15+10*kmPx}" y2="${H-12}" stroke="var(--ink)" stroke-width="2"/>`+tx(15+10*kmPx+6,H-8,'10km',{fs:11,m:1});
+  g+=tx(W-10,18,'倉敷（岡山県）',{a:'end',fs:12,c:'var(--proof)',w:700})+tx(12,18,'福山（広島県）',{fs:12,c:'var(--rust)',w:700});
   document.getElementById('placeviz').innerHTML=sv(H,g,'倉敷と福山の位置関係');
 })();
 
